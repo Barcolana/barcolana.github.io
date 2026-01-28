@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creare test automatici: l'IA come assistente di qualità - Dev & AI</title>
+    <meta name="description"
+        content="I test sono noiosi ma fondamentali. Scopri come l'IA può generare test completi e coprire casi edge che non avresti considerato.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode header {
+            background: rgba(30, 30, 46, 0.95);
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode h1 {
+            color: #8b9dff;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 1.1rem;
+            font-style: italic;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .tagline {
+            color: #b0b0b0;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        body.dark-mode nav {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        body.dark-mode .theme-toggle {
+            background: linear-gradient(135deg, #8b9dff, #9d7ec4);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #764ba2;
+        }
+
+        body.dark-mode nav a {
+            color: #8b9dff;
+        }
+
+        body.dark-mode nav a:hover {
+            color: #9d7ec4;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+            color: #764ba2;
+        }
+
+        body.dark-mode .back-link {
+            color: #8b9dff;
+        }
+
+        body.dark-mode .back-link:hover {
+            color: #9d7ec4;
+        }
+
+        article {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode article {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .article-header {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        body.dark-mode .article-header {
+            border-bottom-color: rgba(139, 157, 255, 0.2);
+        }
+
+        .article-title {
+            color: #667eea;
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .article-title {
+            color: #8b9dff;
+        }
+
+        .article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .article-meta {
+            color: #b0b0b0;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        body.dark-mode .tag {
+            background: rgba(139, 157, 255, 0.2);
+            color: #8b9dff;
+        }
+
+        .article-content {
+            color: #333;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        body.dark-mode .article-content {
+            color: #e0e0e0;
+        }
+
+        .article-content h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .article-content h2 {
+            color: #8b9dff;
+        }
+
+        .article-content h3 {
+            color: #667eea;
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        body.dark-mode .article-content h3 {
+            color: #8b9dff;
+        }
+
+        .article-content p {
+            margin-bottom: 1.2rem;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin-left: 2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: #e91e63;
+        }
+
+        body.dark-mode .article-content code {
+            background: rgba(139, 157, 255, 0.2);
+            color: #ff6b9d;
+        }
+
+        .article-content pre {
+            background: #f5f5f5;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 1.2rem;
+        }
+
+        body.dark-mode .article-content pre {
+            background: rgba(139, 157, 255, 0.1);
+        }
+
+        .article-content pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+        }
+
+        body.dark-mode .article-content pre code {
+            color: #e0e0e0;
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #666;
+        }
+
+        body.dark-mode .article-content blockquote {
+            border-left-color: #8b9dff;
+            color: #b0b0b0;
+        }
+
+        .highlight-box {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        body.dark-mode .highlight-box {
+            background: rgba(139, 157, 255, 0.2);
+            border-left-color: #8b9dff;
+        }
+
+        .test-example {
+            background: rgba(74, 222, 128, 0.05);
+            border: 2px solid rgba(74, 222, 128, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .test-example h4 {
+            color: #4ade80;
+            margin-bottom: 1rem;
+        }
+
+        .coverage-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .article-footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        body.dark-mode .article-footer {
+            border-top-color: rgba(139, 157, 255, 0.2);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .share-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .related-articles {
+            margin-top: 2rem;
+        }
+
+        .related-articles h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .related-articles h3 {
+            color: #8b9dff;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .related-card {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .related-card {
+            background: rgba(139, 157, 255, 0.2);
+        }
+
+        .related-card:hover {
+            transform: translateY(-5px);
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .related-card h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .related-card h4 {
+            color: #8b9dff;
+        }
+
+        .related-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .related-card p {
+            color: #b0b0b0;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode footer {
+            background: rgba(30, 30, 46, 0.9);
+            color: #b0b0b0;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .theme-toggle {
+                position: static;
+                transform: none;
+                margin-top: 1rem;
+                width: 100%;
+            }
+
+            .theme-toggle:hover {
+                transform: scale(1.05);
+            }
+
+            article {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-content {
+                font-size: 1rem;
+            }
+
+            .share-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Dev & AI</h1>
+            <p class="tagline">Il mio viaggio nella programmazione con l'intelligenza artificiale</p>
+            <span class="badge">🤖 AI-Assisted Developer</span>
+        </header>
+
+        <nav>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../articoli.html">Articoli</a></li>
+                <li><a href="../progetti.html">Progetti</a></li>
+                <li><a href="../about.html">Chi Sono</a></li>
+                <li><a href="../contatti.html">Contatti</a></li>
+            </ul>
+        </nav>
+
+        <a href="../articoli.html" class="back-link">← Torna agli articoli</a>
+
+        <article>
+            <div class="article-header">
+                <h1 class="article-title">Creare test automatici: l'IA come assistente di qualità</h1>
+
+                <div class="article-meta">
+                    <span class="meta-item">📅 22 Dicembre 2025</span>
+                    <span class="meta-item">⏱️ 6 minuti di lettura</span>
+                    <span class="meta-item">✍️ Marco</span>
+                </div>
+
+                <div class="article-tags">
+                    <span class="tag">#Testing</span>
+                    <span class="tag">#TDD</span>
+                    <span class="tag">#Quality</span>
+                    <span class="tag">#AI</span>
+                </div>
+            </div>
+
+            <div class="article-content">
+                <p>
+                    Ammettiamolo: scrivere test è noioso. È quella cosa che sai di dover fare ma
+                    continui a rimandare. "Scrivo prima il codice, poi i test" dici, ma i test
+                    non arrivano mai. Risultato? Coverage al 30%, bug in produzione, e notti insonni.
+                </p>
+
+                <p>
+                    Da quando uso l'IA per generare test, la mia coverage è schizzata al 90%+,
+                    i bug in produzione sono calati drasticamente, e (sorpresa) ho anche iniziato
+                    a dormire meglio. Ecco come.
+                </p>
+
+                <div class="highlight-box">
+                    <strong>📊 I miei numeri:</strong> Prima dell'IA: coverage 35%, 12-15 bug/mese
+                    in produzione. Dopo l'IA: coverage 92%, 2-3 bug/mese. Tempo speso in testing:
+                    invariato (ma qualità 10x migliore).
+                </div>
+
+                <h2>Perché i test sono importanti (sì, lo sappiamo)</h2>
+
+                <p>
+                    Non ti farò la predica. Sai già che i test sono importanti. Il problema non è
+                    la volontà, è la fatica:
+                </p>
+
+                <ul>
+                    <li>Pensare a tutti i casi edge è difficile</li>
+                    <li>Scrivere test è ripetitivo e noioso</li>
+                    <li>Mock e setup complessi fanno perdere ore</li>
+                    <li>La deadline incombe e i test scivolano sempre più in basso nella priorità</li>
+                </ul>
+
+                <p>
+                    L'IA risolve tutti questi problemi. Non perché scrive test "al posto tuo",
+                    ma perché ti fa da partner che pensa ai dettagli mentre tu ti concentri
+                    sulla logica.
+                </p>
+
+                <h2>Come uso l'IA per generare test</h2>
+
+                <h3>Step 1: Il prompt base</h3>
+
+                <p>
+                    Il mio template standard per generare test:
+                </p>
+
+                <pre><code>"Genera test Jest completi per questa funzione/componente:
+
+[CODICE]
+
+Requisiti:
+- Happy path con input validi
+- Edge cases (null, undefined, empty array, empty string, 0, -1, etc)
+- Error handling (eccezioni, fallback)
+- Integration con dipendenze (mock appropriati)
+- Async behavior se applicabile
+- Coverage 100% di branches e statements
+
+Formato: Jest con TypeScript"</code></pre>
+
+                <h3>Step 2: Review e raffinamento</h3>
+
+                <p>
+                    L'IA genera i test, io li leggo e:
+                </p>
+
+                <ol>
+                    <li>Verifico che coprano scenari reali del mio dominio</li>
+                    <li>Aggiungo test per business logic specifica</li>
+                    <li>Rimuovo test ridondanti o poco utili</li>
+                    <li>Miglioro le descrizioni dei test</li>
+                </ol>
+
+                <h3>Step 3: Esecuzione e iterazione</h3>
+
+                <p>
+                    Eseguo i test. Se falliscono (spesso succede), chiedo all'IA:
+                </p>
+
+                <pre><code>"Questi test falliscono con errore:
+[ERRORE]
+
+Analizza e suggerisci fix per i test O per il codice produzione 
+(se i test hanno rilevato un bug)."</code></pre>
+
+                <h2>Esempi reali</h2>
+
+                <div class="test-example">
+                    <h4>Esempio 1: Funzione di validazione email<span class="coverage-badge">100%</span></h4>
+
+                    <p><strong>Codice da testare:</strong></p>
+                    <pre><code>export function validateEmail(email: string): boolean {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}</code></pre>
+
+                    <p><strong>Test generati dall'IA (e poi raffinati da me):</strong></p>
+                    <pre><code>describe('validateEmail', () => {
+  describe('valid emails', () => {
+    it('should validate standard email', () => {
+      expect(validateEmail('test@example.com')).toBe(true);
+    });
+
+    it('should validate email with subdomain', () => {
+      expect(validateEmail('user@mail.company.com')).toBe(true);
+    });
+
+    it('should validate email with numbers', () => {
+      expect(validateEmail('user123@example.com')).toBe(true);
+    });
+  });
+
+  describe('invalid emails', () => {
+    it('should reject email without @', () => {
+      expect(validateEmail('testexample.com')).toBe(false);
+    });
+
+    it('should reject email without domain', () => {
+      expect(validateEmail('test@')).toBe(false);
+    });
+
+    it('should reject email with spaces', () => {
+      expect(validateEmail('test @example.com')).toBe(false);
+    });
+
+    it('should reject empty string', () => {
+      expect(validateEmail('')).toBe(false);
+    });
+
+    // Questo l'ho aggiunto io dopo aver pensato al caso d'uso
+    it('should reject email with consecutive dots', () => {
+      expect(validateEmail('test..user@example.com')).toBe(false);
+    });
+  });
+});</code></pre>
+
+                    <p><strong>Cosa ho imparato:</strong> L'IA ha pensato a casi che avrei dimenticato
+                        (email con subdomain, numeri), ma io ho aggiunto il caso dei punti consecutivi
+                        perché conosco il mio dominio applicativo.</p>
+                </div>
+
+                <div class="test-example">
+                    <h4>Esempio 2: Componente React con stato<span class="coverage-badge">95%</span></h4>
+
+                    <p><strong>Componente da testare:</strong></p>
+                    <pre><code>export function Counter() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;+&lt;/button&gt;
+      &lt;button onClick={() => setCount(count - 1)}&gt;-&lt;/button&gt;
+      &lt;button onClick={() => setCount(0)}&gt;Reset&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+                    <p><strong>Test generati dall'IA:</strong></p>
+                    <pre><code>import { render, screen, fireEvent } from '@testing-library/react';
+import { Counter } from './Counter';
+
+describe('Counter', () => {
+  it('should render initial count of 0', () => {
+    render(&lt;Counter /&gt;);
+    expect(screen.getByText('Count: 0')).toBeInTheDocument();
+  });
+
+  it('should increment count when + button clicked', () => {
+    render(&lt;Counter /&gt;);
+    fireEvent.click(screen.getByText('+'));
+    expect(screen.getByText('Count: 1')).toBeInTheDocument();
+  });
+
+  it('should decrement count when - button clicked', () => {
+    render(&lt;Counter /&gt;);
+    fireEvent.click(screen.getByText('-'));
+    expect(screen.getByText('Count: -1')).toBeInTheDocument();
+  });
+
+  it('should reset count to 0 when Reset clicked', () => {
+    render(&lt;Counter /&gt;);
+    fireEvent.click(screen.getByText('+'));
+    fireEvent.click(screen.getByText('+'));
+    fireEvent.click(screen.getByText('Reset'));
+    expect(screen.getByText('Count: 0')).toBeInTheDocument();
+  });
+
+  it('should handle multiple operations', () => {
+    render(&lt;Counter /&gt;);
+    fireEvent.click(screen.getByText('+'));
+    fireEvent.click(screen.getByText('+'));
+    fireEvent.click(screen.getByText('+'));
+    fireEvent.click(screen.getByText('-'));
+    expect(screen.getByText('Count: 2')).toBeInTheDocument();
+  });
+});</code></pre>
+
+                    <p><strong>Valore aggiunto:</strong> L'IA ha pensato al test con "multiple operations"
+                        che testa il flusso utente reale. Questo è oro!</p>
+                </div>
+
+                <h2>I tipi di test che l'IA genera meglio</h2>
+
+                <h3>✅ Eccellente per:</h3>
+                <ul>
+                    <li><strong>Unit test puri:</strong> Funzioni senza side effects, logica matematica, validatori</li>
+                    <li><strong>Test di componenti UI:</strong> Rendering, interazioni utente, props validation</li>
+                    <li><strong>Edge cases:</strong> L'IA è bravissima a pensare a null, undefined, empty, etc</li>
+                    <li><strong>Snapshot tests:</strong> Genera snapshot completi e li mantiene aggiornati</li>
+                    <li><strong>API mocking:</strong> Crea mock realistici per chiamate esterne</li>
+                </ul>
+
+                <h3>⚠️ Richiede supervisione per:</h3>
+                <ul>
+                    <li><strong>Integration tests:</strong> Servono decisioni su cosa integrare</li>
+                    <li><strong>E2E tests:</strong> Troppo legati al flusso business specifico</li>
+                    <li><strong>Performance tests:</strong> Servono benchmark del tuo sistema</li>
+                    <li><strong>Security tests:</strong> Richiedono threat modeling specifico</li>
+                </ul>
+
+                <h2>Il mio workflow quotidiano</h2>
+
+                <h3>Approccio TDD (Test-Driven Development) potenziato</h3>
+
+                <p>Ho adattato il classico ciclo TDD con l'IA:</p>
+
+                <ol>
+                    <li><strong>Red:</strong> Chiedo all'IA di generare test per feature che NON esiste ancora</li>
+                    <li><strong>Green:</strong> Scrivo codice minimo per far passare i test</li>
+                    <li><strong>Refactor:</strong> Uso l'IA per refactorare mantenendo test verdi</li>
+                    <li><strong>Expand:</strong> Chiedo all'IA altri edge cases che potrei aver dimenticato</li>
+                </ol>
+
+                <h3>Esempio pratico TDD con IA:</h3>
+
+                <p><strong>Step 1 - Descrivo la feature:</strong></p>
+                <pre><code>"Devo creare una funzione calculateDiscount che:
+- Prende prezzo e percentuale sconto
+- Restituisce prezzo scontato
+- Se sconto > 100% lancia errore
+- Se prezzo < 0 lancia errore
+- Arrotonda a 2 decimali
+
+Genera i test PRIMA del codice."</code></pre>
+
+                <p><strong>Step 2 - L'IA genera i test:</strong></p>
+                <pre><code>describe('calculateDiscount', () => {
+  it('should calculate 10% discount correctly', () => {
+    expect(calculateDiscount(100, 10)).toBe(90);
+  });
+
+  it('should handle 0% discount', () => {
+    expect(calculateDiscount(100, 0)).toBe(100);
+  });
+
+  it('should round to 2 decimals', () => {
+    expect(calculateDiscount(19.99, 15)).toBe(16.99);
+  });
+
+  it('should throw error if discount > 100', () => {
+    expect(() => calculateDiscount(100, 150)).toThrow();
+  });
+
+  it('should throw error if price < 0', () => {
+    expect(() => calculateDiscount(-10, 20)).toThrow();
+  });
+});</code></pre>
+
+                <p><strong>Step 3 - Eseguo i test (ovviamente falliscono, la funzione non esiste!)</strong></p>
+
+                <p><strong>Step 4 - Scrivo codice minimo:</strong></p>
+                <pre><code>export function calculateDiscount(price: number, discount: number): number {
+  if (price < 0) throw new Error('Price must be positive');
+  if (discount > 100) throw new Error('Discount cannot exceed 100%');
+  
+  const discounted = price * (1 - discount / 100);
+  return Math.round(discounted * 100) / 100;
+}</code></pre>
+
+                <p><strong>Step 5 - Test passano! ✅</strong></p>
+
+                <div class="highlight-box">
+                    <strong>💡 Il vantaggio:</strong> Ho scritto codice guidato da test completi in 5 minuti
+                    invece di 30. E i test coprono casi che avrei sicuramente dimenticato.
+                </div>
+
+                <h2>Prompt avanzati che uso</h2>
+
+                <h3>Per test con mock complessi:</h3>
+                <pre><code>"Genera test per questa funzione che chiama API esterna:
+
+[CODICE]
+
+Requisiti:
+- Mock axios con jest.mock
+- Test happy path (200 response)
+- Test error handling (404, 500, network error)
+- Test retry logic
+- Test timeout
+- Verifica che chiamata API sia corretta (URL, headers, body)"</code></pre>
+
+                <h3>Per aumentare coverage esistente:</h3>
+                <pre><code>"Ho coverage 65% su questo file. Analizza quali branches NON sono coperti 
+e genera test SOLO per quelli:
+
+[CODICE + COVERAGE REPORT]"</code></pre>
+
+                <h3>Per test di regressione:</h3>
+                <pre><code>"Ho fixato un bug dove [DESCRIZIONE BUG]. 
+Genera un test di regressione che verifichi che questo bug non ritorni.
+
+Bug: quando user.email è null, l'app crashava
+Fix: aggiungo controllo null
+
+Genera test che verifichi il fix."</code></pre>
+
+                <h2>Come gestisco i test generati dall'IA</h2>
+
+                <h3>Le mie regole:</h3>
+
+                <ol>
+                    <li>
+                        <strong>Leggo SEMPRE i test generati</strong><br>
+                        Non copio-incollo alla cieca. Leggo, capisco, modifico se necessario.
+                    </li>
+
+                    <li>
+                        <strong>Aggiungo contesto business</strong><br>
+                        L'IA non sa che nel MIO sistema l'email deve essere verificata prima di usarla.
+                        Aggiungo questi test manualmente.
+                    </li>
+
+                    <li>
+                        <strong>Rimuovo test ridondanti</strong><br>
+                        A volte l'IA genera test troppo simili. Li consolido.
+                    </li>
+
+                    <li>
+                        <strong>Miglioro le descrizioni</strong><br>
+                        L'IA tende a descrizioni generiche. Le rendo più specifiche al dominio.
+                    </li>
+
+                    <li>
+                        <strong>Eseguo e verifico</strong><br>
+                        I test devono passare e fallire per i motivi giusti. Testo anche che falliscano
+                        quando dovrebbero.
+                    </li>
+                </ol>
+
+                <h2>Risultati concreti</h2>
+
+                <p>Dopo 6 mesi di testing assistito dall'IA:</p>
+
+                <ul>
+                    <li><strong>Coverage:</strong> da 35% a 92% (obiettivo 95%)</li>
+                    <li><strong>Bug in produzione:</strong> -80%</li>
+                    <li><strong>Tempo medio per scrivere test:</strong> -70%</li>
+                    <li><strong>Confidence nel deployare:</strong> 📈📈📈</li>
+                    <li><strong>Regressioni:</strong> praticamente zero</li>
+                    <li><strong>Onboarding nuovi dev:</strong> più facile (test come documentazione)</li>
+                </ul>
+
+                <blockquote>
+                    "I test generati dall'IA non sono perfetti, ma sono un punto di partenza incredibile.
+                    Mi fanno risparmiare ore e mi fanno pensare a casi che avrei dimenticato."
+                </blockquote>
+
+                <h2>Errori comuni da evitare</h2>
+
+                <h3>❌ Fidarsi ciecamente</h3>
+                <p>
+                    L'IA può generare test che passano ma non testano nulla di utile. Esempio:
+                    test che mocka tutto e testa solo che il mock funzioni.
+                </p>
+
+                <h3>❌ Non eseguire i test</h3>
+                <p>
+                    Genera i test, eseguili, guardali fallire (se appropriato), guardali passare.
+                    Verificare che funzionino davvero.
+                </p>
+
+                <h3>❌ Ignorare il coverage report</h3>
+                <p>
+                    I test possono sembrare completi ma lasciare branches non coperti. Usa il
+                    coverage report e chiedi all'IA di colmare i gap.
+                </p>
+
+                <h3>❌ Test troppo fragili</h3>
+                <p>
+                    A volte l'IA genera test che si rompono per cambiamenti minimi. Rendili più robusti.
+                </p>
+
+                <h2>Best practices che ho imparato</h2>
+
+                <h3>1. Descrizioni chiare dei test</h3>
+                <p>
+                    Invece di "should work", scrivi "should calculate 20% discount on $100 item".
+                    Chiedi all'IA di usare questo stile.
+                </p>
+
+                <h3>2. AAA pattern (Arrange-Act-Assert)</h3>
+                <p>
+                    Chiedi all'IA di strutturare i test con commenti AAA:
+                </p>
+                <pre><code>it('should add item to cart', () => {
+  // Arrange
+  const cart = new ShoppingCart();
+  const item = { id: 1, price: 10 };
+  
+  // Act
+  cart.addItem(item);
+  
+  // Assert
+  expect(cart.items).toHaveLength(1);
+  expect(cart.total).toBe(10);
+});</code></pre>
+
+                <h3>3. Test come documentazione</h3>
+                <p>
+                    I test ben scritti sono la migliore documentazione. Chiedi all'IA di generare
+                    test che mostrino come usare il codice.
+                </p>
+
+                <h3>4. Test isolati</h3>
+                <p>
+                    Ogni test deve essere indipendente. Verifica che l'IA non crei dipendenze tra test.
+                </p>
+
+                <h2>Tool e setup</h2>
+
+                <p>Il mio stack per testing:</p>
+
+                <ul>
+                    <li><strong>Framework:</strong> Jest (per tutto)</li>
+                    <li><strong>React:</strong> React Testing Library</li>
+                    <li><strong>E2E:</strong> Playwright</li>
+                    <li><strong>Coverage:</strong> Istanbul (integrato in Jest)</li>
+                    <li><strong>CI/CD:</strong> GitHub Actions con threshold coverage 85%</li>
+                    <li><strong>AI:</strong> Claude per test complessi, Copilot per test semplici</li>
+                </ul>
+
+                <h2>Conclusioni</h2>
+
+                <p>
+                    L'IA ha trasformato il testing da "cosa noiosa che rimando" a "workflow efficiente
+                    che mi dà sicurezza". Non scrive test perfetti, ma mi dà un vantaggio enorme:
+                </p>
+
+                <ul>
+                    <li>Pensa a edge cases che dimenticherei</li>
+                    <li>Genera boilerplate in secondi</li>
+                    <li>Mi permette di concentrarmi sulla logica business</li>
+                    <li>Aumenta drasticamente la coverage senza rubare tempo</li>
+                </ul>
+
+                <p>
+                    Se stai evitando di scrivere test perché "non hai tempo", prova l'IA. Scoprirai
+                    che il tempo c'è, era solo sprecato nella parte noiosa.
+                </p>
+
+                <div class="highlight-box">
+                    <strong>🎯 Challenge:</strong> Scegli una funzione senza test nel tuo progetto.
+                    Chiedi all'IA di generare test completi. Eseguili. Modifica e migliora. Commit.
+                    Ripeti domani con un'altra funzione. In una settimana avrai +30% di coverage.
+                </div>
+
+                <blockquote>
+                    "I test non sono un lusso, sono assicurazione. E l'IA rende questa assicurazione
+                    accessibile e conveniente."
+                </blockquote>
+            </div>
+
+            <div class="article-footer">
+                <div class="share-buttons">
+                    <a href="#" class="share-btn">📱 Condividi su Twitter</a>
+                    <a href="#" class="share-btn">💼 Condividi su LinkedIn</a>
+                </div>
+
+                <div class="related-articles">
+                    <h3>Articoli correlati</h3>
+                    <div class="related-grid">
+                        <a href="refactoring-legacy-code-con-ia.html" class="related-card">
+                            <h4>Refactoring legacy code con l'IA</h4>
+                            <p>Come modernizzare codice vecchio senza impazzire</p>
+                        </a>
+                        <a href="pair-programming-con-claude.html" class="related-card">
+                            <h4>Pair Programming con Claude</h4>
+                            <p>Collaborare efficacemente con l'intelligenza artificiale</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <footer>
+            <p>&copy; 2026 Dev & AI Blog. Costruito con passione (e un po' di aiuto dall'IA) 🤖💜</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const button = document.querySelector('.theme-toggle');
+
+            body.classList.toggle('dark-mode');
+
+            if (body.classList.contains('dark-mode')) {
+                button.textContent = '☀️ Light Mode';
+            } else {
+                button.textContent = '🌙 Dark Mode';
+            }
+        }
+    </script>
+</body>
+
+</html>

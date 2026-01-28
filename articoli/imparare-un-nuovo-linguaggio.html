@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imparare un nuovo linguaggio in metà tempo con l'IA - Dev & AI</title>
+    <meta name="description"
+        content="Come sono passato da zero a produttivo in Rust in sole 2 settimane grazie all'assistenza dell'intelligenza artificiale.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode header {
+            background: rgba(30, 30, 46, 0.95);
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode h1 {
+            color: #8b9dff;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 1.1rem;
+            font-style: italic;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .tagline {
+            color: #b0b0b0;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        body.dark-mode nav {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        body.dark-mode .theme-toggle {
+            background: linear-gradient(135deg, #8b9dff, #9d7ec4);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #764ba2;
+        }
+
+        body.dark-mode nav a {
+            color: #8b9dff;
+        }
+
+        body.dark-mode nav a:hover {
+            color: #9d7ec4;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+            color: #764ba2;
+        }
+
+        body.dark-mode .back-link {
+            color: #8b9dff;
+        }
+
+        body.dark-mode .back-link:hover {
+            color: #9d7ec4;
+        }
+
+        article {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode article {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .article-header {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        body.dark-mode .article-header {
+            border-bottom-color: rgba(139, 157, 255, 0.2);
+        }
+
+        .article-title {
+            color: #667eea;
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .article-title {
+            color: #8b9dff;
+        }
+
+        .article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .article-meta {
+            color: #b0b0b0;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        body.dark-mode .tag {
+            background: rgba(139, 157, 255, 0.2);
+            color: #8b9dff;
+        }
+
+        .article-content {
+            color: #333;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        body.dark-mode .article-content {
+            color: #e0e0e0;
+        }
+
+        .article-content h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .article-content h2 {
+            color: #8b9dff;
+        }
+
+        .article-content h3 {
+            color: #667eea;
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        body.dark-mode .article-content h3 {
+            color: #8b9dff;
+        }
+
+        .article-content p {
+            margin-bottom: 1.2rem;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin-left: 2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: #e91e63;
+        }
+
+        body.dark-mode .article-content code {
+            background: rgba(139, 157, 255, 0.2);
+            color: #ff6b9d;
+        }
+
+        .article-content pre {
+            background: #f5f5f5;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 1.2rem;
+        }
+
+        body.dark-mode .article-content pre {
+            background: rgba(139, 157, 255, 0.1);
+        }
+
+        .article-content pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+        }
+
+        body.dark-mode .article-content pre code {
+            color: #e0e0e0;
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #666;
+        }
+
+        body.dark-mode .article-content blockquote {
+            border-left-color: #8b9dff;
+            color: #b0b0b0;
+        }
+
+        .highlight-box {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        body.dark-mode .highlight-box {
+            background: rgba(139, 157, 255, 0.2);
+            border-left-color: #8b9dff;
+        }
+
+        .timeline-week {
+            background: rgba(74, 222, 128, 0.05);
+            border-left: 4px solid #4ade80;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
+        body.dark-mode .timeline-week {
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        .timeline-week h4 {
+            color: #4ade80;
+            margin-bottom: 1rem;
+        }
+
+        .learning-path {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .path-card {
+            background: rgba(102, 126, 234, 0.05);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .path-card {
+            background: rgba(139, 157, 255, 0.1);
+            border-color: rgba(139, 157, 255, 0.3);
+        }
+
+        .path-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+
+        .path-card h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .path-card h4 {
+            color: #8b9dff;
+        }
+
+        .article-footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        body.dark-mode .article-footer {
+            border-top-color: rgba(139, 157, 255, 0.2);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .share-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .related-articles {
+            margin-top: 2rem;
+        }
+
+        .related-articles h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .related-articles h3 {
+            color: #8b9dff;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .related-card {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .related-card {
+            background: rgba(139, 157, 255, 0.2);
+        }
+
+        .related-card:hover {
+            transform: translateY(-5px);
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .related-card h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .related-card h4 {
+            color: #8b9dff;
+        }
+
+        .related-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .related-card p {
+            color: #b0b0b0;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode footer {
+            background: rgba(30, 30, 46, 0.9);
+            color: #b0b0b0;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .theme-toggle {
+                position: static;
+                transform: none;
+                margin-top: 1rem;
+                width: 100%;
+            }
+
+            .theme-toggle:hover {
+                transform: scale(1.05);
+            }
+
+            article {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-content {
+                font-size: 1rem;
+            }
+
+            .share-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Dev & AI</h1>
+            <p class="tagline">Il mio viaggio nella programmazione con l'intelligenza artificiale</p>
+            <span class="badge">🤖 AI-Assisted Developer</span>
+        </header>
+
+        <nav>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../articoli.html">Articoli</a></li>
+                <li><a href="../progetti.html">Progetti</a></li>
+                <li><a href="../about.html">Chi Sono</a></li>
+                <li><a href="../contatti.html">Contatti</a></li>
+            </ul>
+        </nav>
+
+        <a href="../articoli.html" class="back-link">← Torna agli articoli</a>
+
+        <article>
+            <div class="article-header">
+                <h1 class="article-title">Imparare un nuovo linguaggio in metà tempo con l'IA</h1>
+
+                <div class="article-meta">
+                    <span class="meta-item">📅 5 Dicembre 2025</span>
+                    <span class="meta-item">⏱️ 7 minuti di lettura</span>
+                    <span class="meta-item">✍️ Marco</span>
+                </div>
+
+                <div class="article-tags">
+                    <span class="tag">#Learning</span>
+                    <span class="tag">#Rust</span>
+                    <span class="tag">#AI</span>
+                    <span class="tag">#Tutorial</span>
+                </div>
+            </div>
+
+            <div class="article-content">
+                <p>
+                    Due settimane. È tutto il tempo che mi è servito per passare da "non ho mai scritto
+                    una riga di Rust" a "ho deployato un microservizio in produzione". Come? Con un
+                    piano strutturato e l'IA come tutor personale 24/7.
+                </p>
+
+                <p>
+                    Rust è notoriamente uno dei linguaggi più difficili da imparare: ownership, borrowing,
+                    lifetimes... concetti che fanno venire il mal di testa. Ma con l'approccio giusto
+                    (e l'aiuto dell'IA), è sorprendentemente più accessibile di quanto pensassi.
+                </p>
+
+                <div class="highlight-box">
+                    <strong>📊 I numeri:</strong> 2 settimane, 2-3 ore al giorno, 1 microservizio funzionante,
+                    0 tutorial video noiosi guardati fino in fondo. 100% project-based learning con IA.
+                </div>
+
+                <h2>Perché Rust (e perché era urgente)</h2>
+
+                <p>
+                    Il mio team doveva costruire un servizio ad alte performance per processare stream
+                    di dati. Node.js era troppo lento, Python pure. Rust era la scelta ovvia, ma nessuno
+                    lo conosceva.
+                </p>
+
+                <p>
+                    Opzioni: (1) assumere un Rust developer (6 mesi di ricerca), (2) outsourcing
+                    (costoso e rischioso), (3) impararlo noi in fretta.
+                </p>
+
+                <p>
+                    Ho scelto (3). E qui inizia la storia.
+                </p>
+
+                <h2>Il piano di apprendimento (generato dall'IA)</h2>
+
+                <p>
+                    Prima di iniziare, ho chiesto a Claude:
+                </p>
+
+                <pre><code>"Devo imparare Rust in 2 settimane per costruire un microservizio 
+che processa stream di dati. Il mio background: JavaScript, Python, 
+un po' di Go.
+
+Crea un piano di apprendimento:
+- 2-3 ore al giorno
+- Focus su ciò che serve per il progetto
+- Hands-on, meno teoria possibile
+- Progetti progressivi dal facile al complesso"</code></pre>
+
+                <p>
+                    Claude mi ha generato un piano settimanale perfetto. Ecco com'era strutturato:
+                </p>
+
+                <div class="timeline-week">
+                    <h4>📅 Settimana 1: Fondamentali</h4>
+                    <p><strong>Giorno 1-2: Sintassi base e ownership</strong></p>
+                    <ul>
+                        <li>Variabili, tipi, funzioni</li>
+                        <li>Ownership rules (il concetto più importante)</li>
+                        <li>Borrowing e references</li>
+                        <li><strong>Progetto:</strong> CLI calculator</li>
+                    </ul>
+
+                    <p><strong>Giorno 3-4: Strutture dati e error handling</strong></p>
+                    <ul>
+                        <li>Struct, enum, pattern matching</li>
+                        <li>Result e Option types</li>
+                        <li>Vector, HashMap basics</li>
+                        <li><strong>Progetto:</strong> Todo list CLI</li>
+                    </ul>
+
+                    <p><strong>Giorno 5-7: Async e network</strong></p>
+                    <ul>
+                        <li>Async/await in Rust</li>
+                        <li>Tokio basics</li>
+                        <li>HTTP server con Axum</li>
+                        <li><strong>Progetto:</strong> Simple REST API</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-week">
+                    <h4>📅 Settimana 2: Progetto reale</h4>
+                    <p><strong>Giorno 8-10: Streaming e concurrency</strong></p>
+                    <ul>
+                        <li>Channels e message passing</li>
+                        <li>Streams in Tokio</li>
+                        <li>Kafka consumer in Rust</li>
+                        <li><strong>Progetto:</strong> Stream processor proof-of-concept</li>
+                    </ul>
+
+                    <p><strong>Giorno 11-14: Build del microservizio</strong></p>
+                    <ul>
+                        <li>Architettare il servizio</li>
+                        <li>Implementazione incrementale</li>
+                        <li>Testing e error handling robusto</li>
+                        <li>Dockerize e deploy</li>
+                        <li><strong>Progetto:</strong> Microservizio completo</li>
+                    </ul>
+                </div>
+
+                <h2>Come ho usato l'IA durante l'apprendimento</h2>
+
+                <h3>1. L'IA come tutor personale</h3>
+
+                <p>
+                    Invece di leggere libri o guardare video, chiedevo direttamente all'IA:
+                </p>
+
+                <pre><code>"Spiega ownership in Rust come se fossi un developer JavaScript.
+Usa esempi pratici e confrontali con JavaScript."</code></pre>
+
+                <p>
+                    L'IA adattava le spiegazioni al mio livello e background. Infinitamente più efficace
+                    di un tutorial generico.
+                </p>
+
+                <h3>2. Debugging interattivo</h3>
+
+                <p>
+                    Quando il compiler Rust mi urlava addosso (succede spesso all'inizio):
+                </p>
+
+                <pre><code>"Ho questo errore del borrow checker:
+[errore]
+
+Il mio codice:
+[codice]
+
+Spiegami cosa significa e come fixarlo. Poi insegnami il concetto 
+sottostante per non rifare lo stesso errore."</code></pre>
+
+                <p>
+                    L'IA non solo fixava l'errore, ma mi spiegava il "perché". Apprendimento vero,
+                    non solo copia-incolla.
+                </p>
+
+                <h3>3. Progetti guidati</h3>
+
+                <p>
+                    Per ogni nuovo concetto, chiedevo all'IA di generare un mini-progetto:
+                </p>
+
+                <pre><code>"Crea un piccolo progetto Rust che mi faccia praticare:
+- Pattern matching con enum
+- Error handling con Result
+- Lettura file
+
+Progetto pratico, non hello world inutile."</code></pre>
+
+                <p>
+                    Risultato: piccoli progetti significativi che consolidavano ogni concetto.
+                </p>
+
+                <h3>4. Code review istantanea</h3>
+
+                <p>
+                    Dopo aver scritto codice:
+                </p>
+
+                <pre><code>"Review questo codice Rust come un senior Rust developer:
+- Idioms che sto violando
+- Pattern migliori che potrei usare
+- Performance issues
+- Safety concerns
+
+[codice]"</code></pre>
+
+                <p>
+                    Feedback immediate invece che aspettare code review umane.
+                </p>
+
+                <h2>I progetti che ho fatto (progressione)</h2>
+
+                <div class="learning-path">
+                    <div class="path-card">
+                        <h4>📝 Progetto 1: Calculator CLI</h4>
+                        <p><strong>Tempo:</strong> 2 ore</p>
+                        <p><strong>Cosa ho imparato:</strong></p>
+                        <ul>
+                            <li>Sintassi base</li>
+                            <li>Parsing user input</li>
+                            <li>Match statements</li>
+                        </ul>
+                    </div>
+
+                    <div class="path-card">
+                        <h4>✅ Progetto 2: Todo CLI</h4>
+                        <p><strong>Tempo:</strong> 4 ore</p>
+                        <p><strong>Cosa ho imparato:</strong></p>
+                        <ul>
+                            <li>Structs e methods</li>
+                            <li>File I/O</li>
+                            <li>Serialization (serde)</li>
+                            <li>Error handling</li>
+                        </ul>
+                    </div>
+
+                    <div class="path-card">
+                        <h4>🌐 Progetto 3: REST API</h4>
+                        <p><strong>Tempo:</strong> 6 ore</p>
+                        <p><strong>Cosa ho imparato:</strong></p>
+                        <ul>
+                            <li>Async/await</li>
+                            <li>Axum framework</li>
+                            <li>JSON handling</li>
+                            <li>Routing</li>
+                        </ul>
+                    </div>
+
+                    <div class="path-card">
+                        <h4>📊 Progetto 4: Stream Processor</h4>
+                        <p><strong>Tempo:</strong> 12 ore</p>
+                        <p><strong>Cosa ho imparato:</strong></p>
+                        <ul>
+                            <li>Tokio streams</li>
+                            <li>Kafka integration</li>
+                            <li>Concurrency patterns</li>
+                            <li>Production-ready code</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Gli errori che ho fatto (e come l'IA mi ha salvato)</h2>
+
+                <h3>❌ Errore 1: Fighting the borrow checker</h3>
+
+                <p>
+                    All'inizio cercavo di scrivere Rust come se fosse JavaScript. Risultato?
+                    Errori di borrowing ovunque.
+                </p>
+
+                <p>
+                    <strong>Come l'IA ha aiutato:</strong> Mi ha spiegato che devo "pensare in Rust",
+                    non tradurre da JavaScript. Mi ha mostrato pattern idiomatici Rust per scenari comuni.
+                </p>
+
+                <h3>❌ Errore 2: Troppa teoria, poca pratica</h3>
+
+                <p>
+                    Ho provato a leggere "The Rust Book" completamente. Dopo 50 pagine ero confuso
+                    e annoiato.
+                </p>
+
+                <p>
+                    <strong>Soluzione con IA:</strong> "Just-in-time learning". Imparavo concetti QUANDO
+                    ne avevo bisogno per il progetto, non prima.
+                </p>
+
+                <h3>❌ Errore 3: Copiare codice senza capire</h3>
+
+                <p>
+                    All'inizio copiavo esempi dell'IA senza capire ownership e lifetimes.
+                </p>
+
+                <p>
+                    <strong>Fix:</strong> Ho iniziato a chiedere: "Spiega ogni riga di questo codice
+                    come se fossi uno studente". L'IA mi forzava a capire.
+                </p>
+
+                <h2>Prompt che hanno fatto la differenza</h2>
+
+                <h3>Per capire concetti difficili:</h3>
+                <pre><code>"Spiega [CONCETTO] in Rust:
+1. Cosa risolve (il problema)
+2. Come funziona (la soluzione)
+3. Quando usarlo (casi d'uso)
+4. Esempio pratico step-by-step
+5. Errori comuni da evitare
+
+Background: conosco [LINGUAGGI CHE CONOSCI]"</code></pre>
+
+                <h3>Per debugging educativo:</h3>
+                <pre><code>"Ho questo errore:
+[ERRORE COMPLETO]
+
+Codice:
+[CODICE]
+
+Non darmi solo il fix. Spiega:
+1. Perché succede l'errore
+2. Quale regola Rust sto violando
+3. Il fix con spiegazione
+4. Come evitare questo errore in futuro"</code></pre>
+
+                <h3>Per progetti practice:</h3>
+                <pre><code>"Crea un progetto Rust che mi faccia praticare:
+- [LISTA CONCETTI]
+
+Requisiti:
+- Progetto pratico e realistico
+- Incrementale (posso costruirlo in step)
+- Include test
+- Commenti che spiegano perché, non solo cosa
+
+Livello: intermediate beginner"</code></pre>
+
+                <h2>Risultati dopo 2 settimane</h2>
+
+                <p>
+                    Cosa riuscivo a fare:
+                </p>
+
+                <ul>
+                    <li>✅ Scrivere codice Rust idiomatico (non perfetto, ma decente)</li>
+                    <li>✅ Capire ownership, borrowing, lifetimes (il 70%, non il 100%)</li>
+                    <li>✅ Usare async/await con Tokio</li>
+                    <li>✅ Integrare con Kafka e processare stream</li>
+                    <li>✅ Scrivere test</li>
+                    <li>✅ Debuggare errori del compiler (la maggior parte)</li>
+                    <li>✅ Deployare in produzione con Docker</li>
+                </ul>
+
+                <p>
+                    Cosa NON sapevo ancora:
+                </p>
+
+                <ul>
+                    <li>❌ Macro avanzate</li>
+                    <li>❌ Unsafe Rust</li>
+                    <li>❌ Ottimizzazioni performance avanzate</li>
+                    <li>❌ Pattern complessi di concurrency</li>
+                </ul>
+
+                <p>
+                    Ma era sufficiente? Assolutamente sì. Il microservizio funzionava, era performante,
+                    e il team poteva mantenerlo.
+                </p>
+
+                <h2>La differenza tra imparare CON e SENZA l'IA</h2>
+
+                <h3>❌ Senza IA (il vecchio modo):</h3>
+                <ul>
+                    <li>Leggere "The Rust Book" → 40 ore</li>
+                    <li>Guardare tutorial YouTube → 20 ore</li>
+                    <li>Cercare soluzioni su Stack Overflow quando bloccato → 15 ore</li>
+                    <li>Trial and error senza feedback → infinite ore di frustrazione</li>
+                    <li><strong>Tempo totale: 2-3 mesi minimo</strong></li>
+                </ul>
+
+                <h3>✅ Con IA (il mio approccio):</h3>
+                <ul>
+                    <li>Apprendimento just-in-time guidato da progetti → 30 ore</li>
+                    <li>Feedback immediato su errori → 0 ore perse in frustrazione</li>
+                    <li>Spiegazioni personalizzate al mio livello → comprensione più veloce</li>
+                    <li>Code review istantanea → miglioramento continuo</li>
+                    <li><strong>Tempo totale: 2 settimane (30 ore totali)</strong></li>
+                </ul>
+
+                <h2>Consigli per replicare questo approccio</h2>
+
+                <h3>1. Inizia con un progetto reale</h3>
+                <p>
+                    Non imparare "per imparare". Impara per COSTRUIRE qualcosa. Il progetto ti
+                    tiene motivato e focalizzato.
+                </p>
+
+                <h3>2. Usa l'IA come tutor, non come oracolo</h3>
+                <p>
+                    Non chiedere solo "come faccio X". Chiedi "spiegami perché X funziona così".
+                    La comprensione batte la memorizzazione.
+                </p>
+
+                <h3>3. Progressione incrementale</h3>
+                <p>
+                    Non saltare dai "hello world" al progetto complesso. Fai 3-4 progetti intermedi
+                    che introducono complessità gradualmente.
+                </p>
+
+                <h3>4. Scrivi codice, non solo leggi</h3>
+                <p>
+                    Ogni concetto deve essere praticato. L'IA può generare esercizi su misura per
+                    ciò che stai imparando.
+                </p>
+
+                <h3>5. Non copiare, capire</h3>
+                <p>
+                    Quando l'IA ti dà codice, chiedile di spiegare ogni riga. Poi prova a riscriverlo
+                    da zero senza guardare.
+                </p>
+
+                <h2>Il template che puoi usare</h2>
+
+                <p>
+                    Vuoi imparare un nuovo linguaggio? Usa questo prompt:
+                </p>
+
+                <pre><code>"Devo imparare [LINGUAGGIO] in [TEMPO] per [OBIETTIVO].
+
+Il mio background:
+- Linguaggi che conosco: [LISTA]
+- Livello: [junior/mid/senior]
+- Tempo disponibile: [ORE AL GIORNO]
+
+Crea un piano di apprendimento:
+- Project-based (non solo teoria)
+- Progressione dal semplice al complesso
+- Include mini-progetti per ogni concetto chiave
+- Focus su ciò che serve per [OBIETTIVO]
+- Suggerisci risorse complementari se necessarie
+
+Formatta come timeline settimanale con progetti specifici."</code></pre>
+
+                <h2>Errori da evitare</h2>
+
+                <h3>❌ Tutorial hell</h3>
+                <p>
+                    Non guardare 50 tutorial. Scegli un progetto e costruiscilo. L'IA ti guida
+                    quando sei bloccato.
+                </p>
+
+                <h3>❌ Paralisi da perfezione</h3>
+                <p>
+                    Non serve capire il 100% prima di iniziare. Impara facendo. Le lacune si
+                    colmano strada facendo.
+                </p>
+
+                <h3>❌ Saltare le basi</h3>
+                <p>
+                    Anche con l'IA, devi capire i concetti fondamentali del linguaggio. Non saltarli
+                    per andare veloce.
+                </p>
+
+                <h3>❌ Non praticare</h3>
+                <p>
+                    Leggere spiegazioni dell'IA ≠ saper programmare. Devi scrivere codice, tanto codice.
+                </p>
+
+                <h2>Conclusioni</h2>
+
+                <p>
+                    Imparare Rust in 2 settimane sembrava impossibile. Con l'approccio giusto e l'IA
+                    come acceleratore, è stato non solo possibile ma anche piacevole.
+                </p>
+
+                <p>
+                    L'IA non mi ha reso pigro, mi ha reso efficiente. Non ho saltato l'apprendimento,
+                    l'ho ottimizzato. Non ho barato, ho usato tutti gli strumenti a mia disposizione.
+                </p>
+
+                <blockquote>
+                    "Il miglior momento per imparare un nuovo linguaggio era ieri. Il secondo miglior
+                    momento è ora, con l'IA come alleato."
+                </blockquote>
+
+                <p>
+                    Se c'è un linguaggio che vuoi imparare ma hai rimandato per mesi, questo è il tuo
+                    segno. Prova l'approccio che ho descritto. In 2 settimane potresti essere produttivo.
+                </p>
+
+                <div class="highlight-box">
+                    <strong>🎯 Challenge:</strong> Scegli un linguaggio che ti incuriosisce. Dedica
+                    2 settimane. Segui il processo. Costruisci qualcosa di reale. Poi raccontami
+                    com'è andata!
+                </div>
+
+                <p>
+                    Il futuro dell'apprendimento non è passivo (guardare video) ma attivo (costruire
+                    con guida AI). È più veloce, più efficace, e infinitamente più soddisfacente.
+                </p>
+
+                <p>
+                    Buon apprendimento! 🚀
+                </p>
+            </div>
+
+            <div class="article-footer">
+                <div class="share-buttons">
+                    <a href="#" class="share-btn">📱 Condividi su Twitter</a>
+                    <a href="#" class="share-btn">💼 Condividi su LinkedIn</a>
+                </div>
+
+                <div class="related-articles">
+                    <h3>Articoli correlati</h3>
+                    <div class="related-grid">
+                        <a href="come-ia-ha-rivoluzionato-workflow.html" class="related-card">
+                            <h4>Come l'IA ha rivoluzionato il mio workflow</h4>
+                            <p>La mia esperienza con l'intelligenza artificiale</p>
+                        </a>
+                        <a href="10-prompts-che-uso-ogni-giorno.html" class="related-card">
+                            <h4>10 Prompts che uso ogni giorno</h4>
+                            <p>I prompt più utili per programmare meglio</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <footer>
+            <p>&copy; 2026 Dev & AI Blog. Costruito con passione (e un po' di aiuto dall'IA) 🤖💜</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const button = document.querySelector('.theme-toggle');
+
+            body.classList.toggle('dark-mode');
+
+            if (body.classList.contains('dark-mode')) {
+                button.textContent = '☀️ Light Mode';
+            } else {
+                button.textContent = '🌙 Dark Mode';
+            }
+        }
+    </script>
+</body>
+
+</html>

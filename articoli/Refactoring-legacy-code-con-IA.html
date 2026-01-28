@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refactoring legacy code con l'aiuto dell'IA - Dev & AI</title>
+    <meta name="description"
+        content="Come ho utilizzato l'IA per modernizzare una codebase di 10 anni senza impazzire. Strategie, errori e successi.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode header {
+            background: rgba(30, 30, 46, 0.95);
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode h1 {
+            color: #8b9dff;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 1.1rem;
+            font-style: italic;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .tagline {
+            color: #b0b0b0;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        body.dark-mode nav {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        body.dark-mode .theme-toggle {
+            background: linear-gradient(135deg, #8b9dff, #9d7ec4);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #764ba2;
+        }
+
+        body.dark-mode nav a {
+            color: #8b9dff;
+        }
+
+        body.dark-mode nav a:hover {
+            color: #9d7ec4;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+            color: #764ba2;
+        }
+
+        body.dark-mode .back-link {
+            color: #8b9dff;
+        }
+
+        body.dark-mode .back-link:hover {
+            color: #9d7ec4;
+        }
+
+        article {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode article {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .article-header {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        body.dark-mode .article-header {
+            border-bottom-color: rgba(139, 157, 255, 0.2);
+        }
+
+        .article-title {
+            color: #667eea;
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .article-title {
+            color: #8b9dff;
+        }
+
+        .article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .article-meta {
+            color: #b0b0b0;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        body.dark-mode .tag {
+            background: rgba(139, 157, 255, 0.2);
+            color: #8b9dff;
+        }
+
+        .article-content {
+            color: #333;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        body.dark-mode .article-content {
+            color: #e0e0e0;
+        }
+
+        .article-content h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .article-content h2 {
+            color: #8b9dff;
+        }
+
+        .article-content h3 {
+            color: #667eea;
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        body.dark-mode .article-content h3 {
+            color: #8b9dff;
+        }
+
+        .article-content p {
+            margin-bottom: 1.2rem;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin-left: 2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: #e91e63;
+        }
+
+        body.dark-mode .article-content code {
+            background: rgba(139, 157, 255, 0.2);
+            color: #ff6b9d;
+        }
+
+        .article-content pre {
+            background: #f5f5f5;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 1.2rem;
+        }
+
+        body.dark-mode .article-content pre {
+            background: rgba(139, 157, 255, 0.1);
+        }
+
+        .article-content pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+        }
+
+        body.dark-mode .article-content pre code {
+            color: #e0e0e0;
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #666;
+        }
+
+        body.dark-mode .article-content blockquote {
+            border-left-color: #8b9dff;
+            color: #b0b0b0;
+        }
+
+        .highlight-box {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        body.dark-mode .highlight-box {
+            background: rgba(139, 157, 255, 0.2);
+            border-left-color: #8b9dff;
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .success-box {
+            background: rgba(74, 222, 128, 0.1);
+            border-left: 4px solid #4ade80;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .before-after {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .before-after pre {
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .before,
+        .after {
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .before {
+            background: rgba(239, 68, 68, 0.05);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .after {
+            background: rgba(74, 222, 128, 0.05);
+            border: 2px solid rgba(74, 222, 128, 0.3);
+        }
+
+        .before h4,
+        .after h4 {
+            margin-bottom: 1rem;
+        }
+
+        .before h4 {
+            color: #ef4444;
+        }
+
+        .after h4 {
+            color: #4ade80;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        body.dark-mode .stat-card {
+            background: rgba(139, 157, 255, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        body.dark-mode .stat-number {
+            color: #8b9dff;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        body.dark-mode .stat-label {
+            color: #b0b0b0;
+        }
+
+        .article-footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        body.dark-mode .article-footer {
+            border-top-color: rgba(139, 157, 255, 0.2);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .share-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .related-articles {
+            margin-top: 2rem;
+        }
+
+        .related-articles h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .related-articles h3 {
+            color: #8b9dff;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .related-card {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .related-card {
+            background: rgba(139, 157, 255, 0.2);
+        }
+
+        .related-card:hover {
+            transform: translateY(-5px);
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .related-card h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .related-card h4 {
+            color: #8b9dff;
+        }
+
+        .related-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .related-card p {
+            color: #b0b0b0;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode footer {
+            background: rgba(30, 30, 46, 0.9);
+            color: #b0b0b0;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .theme-toggle {
+                position: static;
+                transform: none;
+                margin-top: 1rem;
+                width: 100%;
+            }
+
+            .theme-toggle:hover {
+                transform: scale(1.05);
+            }
+
+            article {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-content {
+                font-size: 1rem;
+            }
+
+            .share-buttons {
+                flex-direction: column;
+            }
+
+            .before-after {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Dev & AI</h1>
+            <p class="tagline">Il mio viaggio nella programmazione con l'intelligenza artificiale</p>
+            <span class="badge">🤖 AI-Assisted Developer</span>
+        </header>
+
+        <nav>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../articoli.html">Articoli</a></li>
+                <li><a href="../progetti.html">Progetti</a></li>
+                <li><a href="../about.html">Chi Sono</a></li>
+                <li><a href="../contatti.html">Contatti</a></li>
+            </ul>
+        </nav>
+
+        <a href="../articoli.html" class="back-link">← Torna agli articoli</a>
+
+        <article>
+            <div class="article-header">
+                <h1 class="article-title">Refactoring legacy code con l'aiuto dell'IA</h1>
+
+                <div class="article-meta">
+                    <span class="meta-item">📅 28 Dicembre 2025</span>
+                    <span class="meta-item">⏱️ 10 minuti di lettura</span>
+                    <span class="meta-item">✍️ Marco</span>
+                </div>
+
+                <div class="article-tags">
+                    <span class="tag">#Refactoring</span>
+                    <span class="tag">#LegacyCode</span>
+                    <span class="tag">#AI</span>
+                    <span class="tag">#BestPractices</span>
+                </div>
+            </div>
+
+            <div class="article-content">
+                <p>
+                    Sei mesi fa mi è stato affidato un progetto che ogni developer teme: modernizzare
+                    una codebase legacy di 10 anni, 50.000+ righe di codice, zero test, documentazione
+                    inesistente, e pattern che farebbero piangere Martin Fowler.
+                </p>
+
+                <p>
+                    La stima iniziale? 6 mesi di lavoro a tempo pieno. Il risultato? L'ho completato
+                    in 8 settimane grazie all'IA. Questa è la storia di come ho fatto, gli errori
+                    che ho evitato, e le strategie che hanno funzionato.
+                </p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">50k+</div>
+                        <div class="stat-label">Righe di codice</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">10</div>
+                        <div class="stat-label">Anni di età</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">Settimane lavoro</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">70%</div>
+                        <div class="stat-label">Tempo risparmiato</div>
+                    </div>
+                </div>
+
+                <h2>La situazione di partenza: un incubo</h2>
+
+                <p>
+                    Il progetto era un'applicazione Node.js + jQuery del 2015. Immagina:
+                </p>
+
+                <ul>
+                    <li>File da 2000+ righe (sì, DUEMILA)</li>
+                    <li>Funzioni di 500 righe senza decomposizione</li>
+                    <li>Callback hell ovunque</li>
+                    <li>Nessun uso di async/await (introdotto dopo)</li>
+                    <li>jQuery per manipolazione DOM intensiva</li>
+                    <li>Zero TypeScript, zero validazione tipi</li>
+                    <li>Test coverage: 0%</li>
+                    <li>Commenti in 3 lingue diverse (serio)</li>
+                    <li>Variabili chiamate <code>data</code>, <code>result</code>, <code>tmp</code></li>
+                </ul>
+
+                <blockquote>
+                    "Non toccare il codice che funziona" dicevano. Ma questo codice NON funzionava più.
+                    Ogni nuova feature richiedeva giorni solo per capire dove intervenire.
+                </blockquote>
+
+                <h2>La strategia: divide et impera</h2>
+
+                <p>
+                    Invece di riscrivere tutto da zero (mai una buona idea), ho diviso il refactoring
+                    in fasi. Qui l'IA è stata fondamentale per pianificare.
+                </p>
+
+                <h3>Fase 1: Analisi e mappatura (Settimana 1)</h3>
+
+                <p>
+                    Ho usato Claude per analizzare l'architettura esistente:
+                </p>
+
+                <pre><code>"Analizza questa struttura di progetto e dimmi:
+1. Quali sono i moduli principali
+2. Quali dipendenze ci sono
+3. Quali parti sono più critiche
+4. Suggerisci un ordine di refactoring
+
+[struttura progetto]"</code></pre>
+
+                <p>
+                    Claude ha identificato 8 moduli principali e suggerito di partire dai utility
+                    functions (meno rischiosi) per poi affrontare i controller e routing.
+                </p>
+
+                <h3>Fase 2: Aggiungere test (Settimane 2-3)</h3>
+
+                <div class="warning-box">
+                    <strong>⚠️ Regola d'oro:</strong> Mai refactorare senza test. Mai. L'IA mi ha
+                    generato test per il codice esistente PRIMA di qualsiasi modifica.
+                </div>
+
+                <p>
+                    Per ogni file da refactorare:
+                </p>
+
+                <ol>
+                    <li>Ho chiesto all'IA di generare test che documentassero il comportamento attuale</li>
+                    <li>Ho eseguito i test (molti fallivano per bug esistenti!)</li>
+                    <li>Ho fixato i test per riflettere il comportamento reale</li>
+                    <li>SOLO POI ho iniziato il refactoring</li>
+                </ol>
+
+                <p>Esempio di prompt:</p>
+
+                <pre><code>"Genera test completi per questa funzione.
+Includere:
+- Tutti i path possibili
+- Edge cases
+- Comportamento con input invalidi
+
+[codice funzione]"</code></pre>
+
+                <h3>Fase 3: Refactoring incrementale (Settimane 4-7)</h3>
+
+                <p>
+                    Qui è dove l'IA ha brillato. Per ogni file:
+                </p>
+
+                <div class="before-after">
+                    <div class="before">
+                        <h4>❌ Prima (callback hell)</h4>
+                        <pre><code>function getData(id, callback) {
+  db.query('SELECT...', (err, user) => {
+    if (err) return callback(err);
+    api.fetch(user.id, (err, data) => {
+      if (err) return callback(err);
+      processData(data, (err, result) => {
+        if (err) return callback(err);
+        callback(null, result);
+      });
+    });
+  });
+}</code></pre>
+                    </div>
+
+                    <div class="after">
+                        <h4>✅ Dopo (async/await)</h4>
+                        <pre><code>async function getData(id: string): Promise<ProcessedData> {
+  const user = await db.query('SELECT...');
+  const data = await api.fetch(user.id);
+  return processData(data);
+}</code></pre>
+                    </div>
+                </div>
+
+                <p>
+                    Per ogni trasformazione, ho usato Claude così:
+                </p>
+
+                <pre><code>"Refactorizza questa funzione:
+1. Converti da callback a async/await
+2. Aggiungi TypeScript types
+3. Migliora naming delle variabili
+4. Decomponilo se troppo complesso
+5. Mantieni ESATTAMENTE lo stesso comportamento
+
+[codice originale]"</code></pre>
+
+                <h3>Fase 4: Modernizzazione frontend (Settimana 8)</h3>
+
+                <p>
+                    La parte più audace: convertire jQuery in React. L'IA ha:
+                </p>
+
+                <ul>
+                    <li>Identificato ogni manipolazione DOM</li>
+                    <li>Suggerito la struttura component appropriata</li>
+                    <li>Generato componenti React equivalenti</li>
+                    <li>Creato hooks personalizzati per logica riusabile</li>
+                </ul>
+
+                <h2>Le tecniche che hanno funzionato</h2>
+
+                <h3>1. Il pattern "Test-Refactor-Verify"</h3>
+
+                <p>
+                    Per OGNI modifica:
+                </p>
+
+                <ol>
+                    <li><strong>Scrivi test</strong> (con aiuto IA)</li>
+                    <li><strong>Refactora</strong> (con aiuto IA)</li>
+                    <li><strong>Verifica</strong> che i test passino ancora</li>
+                    <li><strong>Review</strong> manuale del codice</li>
+                    <li><strong>Commit</strong> se tutto ok</li>
+                </ol>
+
+                <p>
+                    Ho fatto micro-commits ogni 30-60 minuti. Se qualcosa rompeva, rollback immediato.
+                </p>
+
+                <h3>2. Documentazione contestuale</h3>
+
+                <p>
+                    Mentre l'IA refactorava, gli chiedevo anche di:
+                </p>
+
+                <pre><code>"Genera JSDoc completa che spieghi:
+- Cosa fa questa funzione
+- Perché esiste (business logic)
+- Edge cases da considerare
+- Esempi d'uso"</code></pre>
+
+                <p>
+                    Risultato? Codebase finale perfettamente documentata.
+                </p>
+
+                <h3>3. Type Safety progressiva</h3>
+
+                <p>
+                    Non sono passato a TypeScript in un giorno. L'approccio:
+                </p>
+
+                <ol>
+                    <li>Convertire un modulo alla volta</li>
+                    <li>Iniziare con tipi semplici (<code>string</code>, <code>number</code>)</li>
+                    <li>Progressivamente aggiungere interfacce complesse</li>
+                    <li>Usare <code>any</code> strategicamente dove necessario</li>
+                    <li>Raffinare i tipi iterativamente</li>
+                </ol>
+
+                <h3>4. Parallel refactoring</h3>
+
+                <p>
+                    Grazie ai test, potevo lavorare su moduli indipendenti in parallelo:
+                </p>
+
+                <ul>
+                    <li>Claude refactorava utilities mentre io facevo controller</li>
+                    <li>Generava test mentre io rivedevo codice</li>
+                    <li>Documentava mentre io integravo</li>
+                </ul>
+
+                <h2>Gli errori che ho evitato (per un pelo)</h2>
+
+                <h3>❌ Errore 1: Fidarsi ciecamente dell'IA</h3>
+
+                <p>
+                    L'IA a volte "inventa" API o pattern che sembrano giusti ma non esistono.
+                    Esempio: Claude una volta ha suggerito un metodo <code>array.findLast()</code>
+                    che non esisteva in quella versione di Node.
+                </p>
+
+                <p><strong>Soluzione:</strong> SEMPRE verificare con documentazione ufficiale.</p>
+
+                <h3>❌ Errore 2: Refactoring troppo aggressivo</h3>
+
+                <p>
+                    All'inizio volevo modernizzare tutto subito. Risultato? Ho rotto mezza applicazione.
+                </p>
+
+                <p><strong>Soluzione:</strong> Micro-refactoring incrementali. Un modulo alla volta.</p>
+
+                <h3>❌ Errore 3: Ignorare il contesto business</h3>
+
+                <p>
+                    L'IA non sa perché certe cose sono implementate in modo "strano". A volte c'è
+                    un motivo business.
+                </p>
+
+                <p><strong>Soluzione:</strong> Chiedere a chi ha scritto il codice (se disponibile)
+                    o conservare comportamento esistente finché non si capisce il perché.</p>
+
+                <div class="highlight-box">
+                    <strong>💡 Lezione chiave:</strong> L'IA propone, l'umano decide. Sempre. Il
+                    refactoring è una decisione strategica, non solo tecnica.
+                </div>
+
+                <h2>I risultati concreti</h2>
+
+                <div class="success-box">
+                    <h3>📊 Metriche prima/dopo</h3>
+                    <ul>
+                        <li><strong>Complessità ciclomatica media:</strong> da 45 a 8</li>
+                        <li><strong>Righe per funzione:</strong> da 200+ a 15-30</li>
+                        <li><strong>Test coverage:</strong> da 0% a 85%</li>
+                        <li><strong>Build time:</strong> da 45s a 8s</li>
+                        <li><strong>Bundle size:</strong> -40% (da 2.5MB a 1.5MB)</li>
+                        <li><strong>Performance:</strong> +60% velocità caricamento</li>
+                        <li><strong>Type safety:</strong> da 0% a 100% (TypeScript)</li>
+                    </ul>
+                </div>
+
+                <h3>Il valore per il business</h3>
+
+                <ul>
+                    <li><strong>Tempo nuove feature:</strong> da 3-4 giorni a 4-6 ore</li>
+                    <li><strong>Bug in produzione:</strong> -75%</li>
+                    <li><strong>Onboarding nuovi dev:</strong> da 2 settimane a 3 giorni</li>
+                    <li><strong>Maintenance cost:</strong> -60%</li>
+                </ul>
+
+                <h2>Gli strumenti che ho usato</h2>
+
+                <h3>IA Tools</h3>
+                <ul>
+                    <li><strong>Claude:</strong> Planning, architettura, refactoring complesso</li>
+                    <li><strong>GitHub Copilot:</strong> Completamento codice, generazione test</li>
+                    <li><strong>Cursor:</strong> Multi-file refactoring, search & replace intelligente</li>
+                </ul>
+
+                <h3>Development Tools</h3>
+                <ul>
+                    <li><strong>Jest:</strong> Testing framework</li>
+                    <li><strong>ESLint + Prettier:</strong> Code quality e formatting</li>
+                    <li><strong>TypeScript:</strong> Type safety</li>
+                    <li><strong>SonarQube:</strong> Code quality metrics</li>
+                    <li><strong>Git:</strong> Version control (branch per ogni modulo)</li>
+                </ul>
+
+                <h2>Il processo step-by-step che puoi replicare</h2>
+
+                <h3>Week 1: Analisi</h3>
+                <ol>
+                    <li>Usa l'IA per mappare l'architettura esistente</li>
+                    <li>Identifica i moduli critici vs quelli isolati</li>
+                    <li>Crea un piano di refactoring ordinato per rischio</li>
+                    <li>Stima tempi (poi moltiplica per 1.5 per sicurezza)</li>
+                </ol>
+
+                <h3>Week 2-3: Foundation</h3>
+                <ol>
+                    <li>Setup testing framework</li>
+                    <li>Genera test per codice esistente (con IA)</li>
+                    <li>Fix bug evidenti scoperti dai test</li>
+                    <li>Stabilizza la baseline (tutti i test verdi)</li>
+                </ol>
+
+                <h3>Week 4+: Refactoring incrementale</h3>
+                <ol>
+                    <li>Scegli un modulo (inizia dal più semplice)</li>
+                    <li>Scrivi test se mancanti</li>
+                    <li>Refactora con l'IA</li>
+                    <li>Review manuale</li>
+                    <li>Test, commit, ripeti</li>
+                </ol>
+
+                <h3>Final Week: Polish</h3>
+                <ol>
+                    <li>Documentazione completa (con IA)</li>
+                    <li>Performance optimization</li>
+                    <li>Security audit</li>
+                    <li>User acceptance testing</li>
+                </ol>
+
+                <h2>Prompts che ho usato più spesso</h2>
+
+                <h3>Per analisi architetturale:</h3>
+                <pre><code>"Analizza questa codebase e:
+1. Identifica pattern architetturali usati
+2. Trova code smells principali
+3. Suggerisci ordine di refactoring
+4. Evidenzia dipendenze critiche
+
+[struttura progetto]"</code></pre>
+
+                <h3>Per refactoring singola funzione:</h3>
+                <pre><code>"Refactorizza questa funzione mantenendo comportamento identico:
+1. Converti a TypeScript
+2. Usa async/await invece di callbacks
+3. Decomponi se >50 righe
+4. Migliora naming
+5. Aggiungi error handling robusto
+6. Documenta con JSDoc
+
+[codice funzione]"</code></pre>
+
+                <h3>Per generazione test:</h3>
+                <pre><code>"Genera test Jest completi per questa funzione:
+- Happy path
+- Edge cases (null, undefined, empty, etc)
+- Error cases
+- Integration con dipendenze (mock se necessario)
+- Coverage 100%
+
+[codice da testare]"</code></pre>
+
+                <h3>Per conversione jQuery → React:</h3>
+                <pre><code>"Converti questa manipolazione DOM jQuery in un componente React:
+- Identifica stato necessario
+- Crea hooks appropriati
+- Mantieni stesso comportamento visuale
+- Usa TypeScript
+- Ottimizza performance
+
+[codice jQuery]"</code></pre>
+
+                <h2>Quando NON usare l'IA per refactoring</h2>
+
+                <p>L'IA non è sempre la risposta. Evita l'IA quando:</p>
+
+                <ul>
+                    <li><strong>Business logic complessa:</strong> Serve comprensione dominio</li>
+                    <li><strong>Performance critiche:</strong> Servono profiling e ottimizzazioni manuali</li>
+                    <li><strong>Security-sensitive code:</strong> Review umana obbligatoria</li>
+                    <li><strong>Decisioni architetturali:</strong> Serve esperienza e visione</li>
+                    <li><strong>Codice con side effects nascosti:</strong> Troppo rischioso</li>
+                </ul>
+
+                <h2>Consigli finali</h2>
+
+                <div class="highlight-box">
+                    <h3>✅ Best Practices</h3>
+                    <ul>
+                        <li><strong>Parti piccolo:</strong> Un file alla volta, non l'intero progetto</li>
+                        <li><strong>Test prima:</strong> Mai refactorare senza safety net</li>
+                        <li><strong>Commit spesso:</strong> Micro-commits ogni 30-60 minuti</li>
+                        <li><strong>Review tutto:</strong> L'IA può sbagliare, tu sei il quality gate</li>
+                        <li><strong>Documentazione parallela:</strong> Documenta mentre refactori</li>
+                        <li><strong>Team alignment:</strong> Condividi progressi e decisioni</li>
+                        <li><strong>Misura impatto:</strong> Traccia metriche prima/dopo</li>
+                    </ul>
+                </div>
+
+                <h2>Il costo reale</h2>
+
+                <p>Investimento totale per questo progetto:</p>
+
+                <ul>
+                    <li><strong>Tempo:</strong> 8 settimane (vs 6 mesi stimati)</li>
+                    <li><strong>AI tools:</strong> ~$70/mese × 2 mesi = $140</li>
+                    <li><strong>ROI:</strong> 4 mesi risparmiati = 16 settimane × 40h = 640 ore</li>
+                </ul>
+
+                <p>
+                    Se valuti il tempo a €50/ora, hai risparmiato €32,000.
+                    Investimento AI: $140 (~€130).
+                </p>
+
+                <p><strong>ROI: 24,500%</strong> 🤯</p>
+
+                <h2>Conclusioni</h2>
+
+                <p>
+                    Refactorare legacy code è sempre stato un incubo. L'IA non lo rende facile,
+                    ma lo rende fattibile. Trasforma un lavoro da 6 mesi in 8 settimane senza
+                    sacrificare la qualità.
+                </p>
+
+                <p>
+                    La chiave è usare l'IA strategicamente: per generare test, proporre refactoring,
+                    documentare codice. Ma tu rimani sempre il decision maker. L'IA accelera, tu guidi.
+                </p>
+
+                <blockquote>
+                    "Il miglior refactoring è quello che non rompe nulla. L'IA ti aiuta a raggiungere
+                    questo obiettivo fornendo test completi e trasformazioni incrementali verificabili."
+                </blockquote>
+
+                <p>
+                    Se hai legacy code che ti terrorizza, non aspettare. Inizia con un piccolo modulo,
+                    segui il processo che ho descritto, e vedrai risultati in giorni, non mesi.
+                </p>
+
+                <div class="success-box">
+                    <strong>🎯 Challenge:</strong> Scegli il file più brutto del tuo progetto. Quello
+                    che tutti evitano. Dedica 2 ore a refactorarlo con l'IA seguendo questo processo.
+                    Poi raccontami come è andata!
+                </div>
+            </div>
+
+            <div class="article-footer">
+                <div class="share-buttons">
+                    <a href="#" class="share-btn">📱 Condividi su Twitter</a>
+                    <a href="#" class="share-btn">💼 Condividi su LinkedIn</a>
+                </div>
+
+                <div class="related-articles">
+                    <h3>Articoli correlati</h3>
+                    <div class="related-grid">
+                        <a href="come-ia-ha-rivoluzionato-workflow.html" class="related-card">
+                            <h4>Come l'IA ha rivoluzionato il mio workflow</h4>
+                            <p>La mia esperienza con l'intelligenza artificiale nello sviluppo</p>
+                        </a>
+                        <a href="pair-programming-con-claude.html" class="related-card">
+                            <h4>Pair Programming con Claude</h4>
+                            <p>Collaborare efficacemente con l'intelligenza artificiale</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <footer>
+            <p>&copy; 2026 Dev & AI Blog. Costruito con passione (e un po' di aiuto dall'IA) 🤖💜</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const button = document.querySelector('.theme-toggle');
+
+            body.classList.toggle('dark-mode');
+
+            if (body.classList.contains('dark-mode')) {
+                button.textContent = '☀️ Light Mode';
+            } else {
+                button.textContent = '🌙 Dark Mode';
+            }
+        }
+    </script>
+</body>
+
+</html>

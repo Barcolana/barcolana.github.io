@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pair Programming con Claude: la mia esperienza - Dev & AI</title>
+    <meta name="description"
+        content="Che cosa significa davvero fare pair programming con un'IA? Esploro i pro, i contro e le sorprese che ho incontrato collaborando con Claude.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode header {
+            background: rgba(30, 30, 46, 0.95);
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode h1 {
+            color: #8b9dff;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 1.1rem;
+            font-style: italic;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .tagline {
+            color: #b0b0b0;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        body.dark-mode nav {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        body.dark-mode .theme-toggle {
+            background: linear-gradient(135deg, #8b9dff, #9d7ec4);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #764ba2;
+        }
+
+        body.dark-mode nav a {
+            color: #8b9dff;
+        }
+
+        body.dark-mode nav a:hover {
+            color: #9d7ec4;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+            color: #764ba2;
+        }
+
+        body.dark-mode .back-link {
+            color: #8b9dff;
+        }
+
+        body.dark-mode .back-link:hover {
+            color: #9d7ec4;
+        }
+
+        article {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode article {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .article-header {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        body.dark-mode .article-header {
+            border-bottom-color: rgba(139, 157, 255, 0.2);
+        }
+
+        .article-title {
+            color: #667eea;
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .article-title {
+            color: #8b9dff;
+        }
+
+        .article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .article-meta {
+            color: #b0b0b0;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        body.dark-mode .tag {
+            background: rgba(139, 157, 255, 0.2);
+            color: #8b9dff;
+        }
+
+        .article-content {
+            color: #333;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        body.dark-mode .article-content {
+            color: #e0e0e0;
+        }
+
+        .article-content h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .article-content h2 {
+            color: #8b9dff;
+        }
+
+        .article-content h3 {
+            color: #667eea;
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        body.dark-mode .article-content h3 {
+            color: #8b9dff;
+        }
+
+        .article-content p {
+            margin-bottom: 1.2rem;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin-left: 2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: #e91e63;
+        }
+
+        body.dark-mode .article-content code {
+            background: rgba(139, 157, 255, 0.2);
+            color: #ff6b9d;
+        }
+
+        .article-content pre {
+            background: #f5f5f5;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 1.2rem;
+        }
+
+        body.dark-mode .article-content pre {
+            background: rgba(139, 157, 255, 0.1);
+        }
+
+        .article-content pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+        }
+
+        body.dark-mode .article-content pre code {
+            color: #e0e0e0;
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #666;
+        }
+
+        body.dark-mode .article-content blockquote {
+            border-left-color: #8b9dff;
+            color: #b0b0b0;
+        }
+
+        .highlight-box {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        body.dark-mode .highlight-box {
+            background: rgba(139, 157, 255, 0.2);
+            border-left-color: #8b9dff;
+        }
+
+        .pros-cons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .pros-box,
+        .cons-box {
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .pros-box {
+            background: rgba(74, 222, 128, 0.1);
+            border-left: 4px solid #4ade80;
+        }
+
+        .cons-box {
+            background: rgba(251, 191, 36, 0.1);
+            border-left: 4px solid #fbbf24;
+        }
+
+        .pros-box h4,
+        .cons-box h4 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .article-footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        body.dark-mode .article-footer {
+            border-top-color: rgba(139, 157, 255, 0.2);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .share-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .related-articles {
+            margin-top: 2rem;
+        }
+
+        .related-articles h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .related-articles h3 {
+            color: #8b9dff;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .related-card {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .related-card {
+            background: rgba(139, 157, 255, 0.2);
+        }
+
+        .related-card:hover {
+            transform: translateY(-5px);
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .related-card h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .related-card h4 {
+            color: #8b9dff;
+        }
+
+        .related-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .related-card p {
+            color: #b0b0b0;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode footer {
+            background: rgba(30, 30, 46, 0.9);
+            color: #b0b0b0;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .theme-toggle {
+                position: static;
+                transform: none;
+                margin-top: 1rem;
+                width: 100%;
+            }
+
+            .theme-toggle:hover {
+                transform: scale(1.05);
+            }
+
+            article {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-content {
+                font-size: 1rem;
+            }
+
+            .share-buttons {
+                flex-direction: column;
+            }
+
+            .pros-cons-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Dev & AI</h1>
+            <p class="tagline">Il mio viaggio nella programmazione con l'intelligenza artificiale</p>
+            <span class="badge">🤖 AI-Assisted Developer</span>
+        </header>
+
+        <nav>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../articoli.html">Articoli</a></li>
+                <li><a href="../progetti.html">Progetti</a></li>
+                <li><a href="../about.html">Chi Sono</a></li>
+                <li><a href="../contatti.html">Contatti</a></li>
+            </ul>
+        </nav>
+
+        <a href="../articoli.html" class="back-link">← Torna agli articoli</a>
+
+        <article>
+            <div class="article-header">
+                <h1 class="article-title">Pair Programming con Claude: la mia esperienza</h1>
+
+                <div class="article-meta">
+                    <span class="meta-item">📅 10 Gennaio 2026</span>
+                    <span class="meta-item">⏱️ 8 minuti di lettura</span>
+                    <span class="meta-item">✍️ Marco</span>
+                </div>
+
+                <div class="article-tags">
+                    <span class="tag">#Claude</span>
+                    <span class="tag">#PairProgramming</span>
+                    <span class="tag">#AI</span>
+                    <span class="tag">#Collaboration</span>
+                </div>
+            </div>
+
+            <div class="article-content">
+                <p>
+                    Quando ho iniziato a usare Claude per programmare, non mi aspettavo che sarebbe
+                    diventato il mio "collega" di sviluppo più affidabile. Dopo centinaia di ore
+                    di pair programming con questa IA, voglio condividere cosa ho imparato, cosa
+                    funziona davvero e dove l'IA ancora non può sostituire un essere umano.
+                </p>
+
+                <h2>Cos'è il pair programming con un'IA?</h2>
+
+                <p>
+                    Il pair programming tradizionale prevede due developer che lavorano insieme
+                    allo stesso codice: uno scrive (driver) e l'altro guida e rivede (navigator).
+                    Con Claude, il processo è simile ma con dinamiche diverse:
+                </p>
+
+                <ul>
+                    <li><strong>Io</strong> definisco il problema e l'obiettivo</li>
+                    <li><strong>Claude</strong> propone soluzioni e implementazioni</li>
+                    <li><strong>Io</strong> rivedo, critico e affino</li>
+                    <li><strong>Insieme</strong> iteriamo fino alla soluzione ottimale</li>
+                </ul>
+
+                <p>
+                    Non è un rapporto di dipendenza ma di vera collaborazione. Claude porta
+                    velocità e conoscenza enciclopedica, io porto contesto, giudizio e creatività.
+                </p>
+
+                <h2>Un esempio pratico: refactoring di un componente React</h2>
+
+                <p>
+                    Recentemente dovevo refactorare un componente React complesso che gestiva
+                    un form multi-step. Era diventato un mostro di 500 righe con logica intrecciata.
+                    Ecco come ho lavorato con Claude:
+                </p>
+
+                <h3>Step 1: Analisi del problema</h3>
+
+                <p>
+                    Ho condiviso il componente con Claude e chiesto: "Questo componente è diventato
+                    troppo complesso. Come lo refactorizzeresti?"
+                </p>
+
+                <p>
+                    Claude ha analizzato il codice e suggerito:
+                </p>
+
+                <ul>
+                    <li>Separare la logica di validazione in un custom hook</li>
+                    <li>Creare componenti più piccoli per ogni step</li>
+                    <li>Usare un context per gestire lo stato condiviso</li>
+                    <li>Implementare un pattern state machine per i transition</li>
+                </ul>
+
+                <h3>Step 2: Implementazione iterativa</h3>
+
+                <p>
+                    Non ho accettato tutto ciecamente. Ho chiesto a Claude di implementare
+                    prima il custom hook per la validazione. L'ha fatto, ma ho notato che:
+                </p>
+
+                <blockquote>
+                    "Hey Claude, questo hook è ottimo ma non gestisce la validazione asincrona
+                    che mi serve per controllare l'email sul backend. Puoi modificarlo?"
+                </blockquote>
+
+                <p>
+                    Claude ha aggiornato il codice, aggiungendo il supporto per validatori async.
+                    Perfetto! Questo tipo di iterazione veloce è oro puro.
+                </p>
+
+                <h3>Step 3: Testing e edge cases</h3>
+
+                <p>
+                    Ho chiesto a Claude di generare i test per il nuovo hook. Ha creato test
+                    completi ma... ha dimenticato un edge case importante che solo io, conoscendo
+                    il business logic, potevo sapere.
+                </p>
+
+                <div class="highlight-box">
+                    <strong>💡 Lezione appresa:</strong> L'IA è eccellente per i casi standard,
+                    ma il developer umano deve sempre considerare gli edge cases specifici del
+                    proprio dominio applicativo.
+                </div>
+
+                <h2>Pro e Contro del pair programming con Claude</h2>
+
+                <div class="pros-cons-grid">
+                    <div class="pros-box">
+                        <h4>✅ Vantaggi</h4>
+                        <ul>
+                            <li><strong>Disponibilità 24/7:</strong> Claude non va mai in pausa caffè</li>
+                            <li><strong>Velocità:</strong> Genera boilerplate in secondi</li>
+                            <li><strong>Pazienza infinita:</strong> Non si stanca di rispiegare</li>
+                            <li><strong>Conoscenza ampia:</strong> Conosce migliaia di librerie</li>
+                            <li><strong>Zero giudizio:</strong> Posso fare domande "stupide"</li>
+                            <li><strong>Documentazione istantanea:</strong> Genera doc mentre sviluppiamo</li>
+                        </ul>
+                    </div>
+
+                    <div class="cons-box">
+                        <h4>⚠️ Limitazioni</h4>
+                        <ul>
+                            <li><strong>Nessun contesto reale:</strong> Non conosce il tuo business</li>
+                            <li><strong>Può allucinare:</strong> A volte inventa API inesistenti</li>
+                            <li><strong>Manca intuizione:</strong> Non "sente" quando qualcosa è off</li>
+                            <li><strong>Nessuna creatività vera:</strong> Ricombina conoscenza esistente</li>
+                            <li><strong>Bisogno di guida:</strong> Devi sapere cosa chiedere</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Le mie regole d'oro per il pair programming efficace</h2>
+
+                <h3>1. Sii specifico nelle richieste</h3>
+
+                <p><strong>❌ Male:</strong> "Crea un componente per il login"</p>
+                <p><strong>✅ Bene:</strong> "Crea un componente React per il login usando TypeScript,
+                    React Hook Form per la validazione, con campi email e password, gestione errori
+                    e integrazione con la mia API che restituisce un JWT"</p>
+
+                <h3>2. Itera in piccoli step</h3>
+
+                <p>
+                    Non chiedere a Claude di costruire un'intera feature in un colpo. Procedi
+                    per piccoli incrementi, testando e validando ogni passo.
+                </p>
+
+                <h3>3. Fornisci contesto</h3>
+
+                <p>
+                    Più contesto dai a Claude (struttura progetto, convenzioni, pattern già usati),
+                    migliore sarà il codice che genera. Condivido sempre:
+                </p>
+
+                <ul>
+                    <li>La struttura delle cartelle del progetto</li>
+                    <li>Le convenzioni di naming che uso</li>
+                    <li>Esempi di componenti simili già esistenti</li>
+                    <li>I requisiti non funzionali (performance, accessibilità)</li>
+                </ul>
+
+                <h3>4. Valida SEMPRE il codice</h3>
+
+                <p>
+                    Non copiare mai codice senza capirlo. Leggi ogni riga, fai domande se qualcosa
+                    non è chiaro, verifica con la documentazione ufficiale.
+                </p>
+
+                <h3>5. Usa Claude per imparare</h3>
+
+                <p>
+                    Quando Claude propone una soluzione che non conosci, chiedi: "Puoi spiegarmi
+                    perché hai scelto questo approccio?" Le spiegazioni di Claude sono spesso
+                    migliori di molti tutorial online.
+                </p>
+
+                <h2>Quando NON usare Claude</h2>
+
+                <p>
+                    Ci sono momenti in cui collaborare con un umano è insostituibile:
+                </p>
+
+                <ul>
+                    <li><strong>Decisioni architetturali critiche:</strong> Servono esperienza e visione</li>
+                    <li><strong>Debugging di problemi oscuri:</strong> L'intuizione umana è fondamentale</li>
+                    <li><strong>Code review importanti:</strong> Serve empatia e comprensione del team</li>
+                    <li><strong>Discussioni di design:</strong> Serve creatività e compromesso</li>
+                </ul>
+
+                <h2>Il workflow che uso quotidianamente</h2>
+
+                <p>
+                    Ecco come integro Claude nella mia giornata tipo:
+                </p>
+
+                <ol>
+                    <li><strong>Planning (30 min):</strong> Discuto con Claude l'approccio alla feature</li>
+                    <li><strong>Scaffolding (15 min):</strong> Claude genera la struttura base</li>
+                    <li><strong>Implementazione (2-3 ore):</strong> Alterno tra scrivere codice da solo
+                        e chiedere aiuto a Claude per parti complesse</li>
+                    <li><strong>Testing (30 min):</strong> Claude genera i test, io aggiungo edge cases</li>
+                    <li><strong>Refactoring (30 min):</strong> Rivediamo insieme il codice</li>
+                    <li><strong>Documentazione (15 min):</strong> Claude genera JSDoc e README</li>
+                </ol>
+
+                <h2>Il mio risultato dopo 6 mesi</h2>
+
+                <p>
+                    Dopo sei mesi di pair programming intensivo con Claude, posso dire che:
+                </p>
+
+                <ul>
+                    <li>Sviluppo feature il 40-50% più velocemente</li>
+                    <li>Il mio codice è meglio documentato</li>
+                    <li>Ho imparato pattern e tecniche nuove</li>
+                    <li>Mi diverto di più a programmare</li>
+                    <li>Ho più tempo per problemi davvero complessi</li>
+                </ul>
+
+                <blockquote>
+                    "Claude non mi ha reso pigro, mi ha liberato dalle parti noiose permettendomi
+                    di concentrarmi su ciò che amo: risolvere problemi complessi e creare valore."
+                </blockquote>
+
+                <h2>Conclusioni</h2>
+
+                <p>
+                    Il pair programming con Claude ha trasformato il mio modo di lavorare. Non è
+                    perfetto, ma quando impari a collaborare efficacemente, diventa uno strumento
+                    potentissimo.
+                </p>
+
+                <p>
+                    Il segreto è ricordare che sei tu il senior developer in questa coppia. Claude
+                    è un junior estremamente capace e veloce, ma ha bisogno della tua guida, del
+                    tuo giudizio e della tua esperienza.
+                </p>
+
+                <div class="highlight-box">
+                    <strong>🚀 Prossimo articolo:</strong> Condividerò esempi concreti di prompt
+                    che uso quotidianamente per ottenere il massimo da Claude. Con trascrizioni
+                    reali delle nostre conversazioni!
+                </div>
+            </div>
+
+            <div class="article-footer">
+                <div class="share-buttons">
+                    <a href="#" class="share-btn">📱 Condividi su Twitter</a>
+                    <a href="#" class="share-btn">💼 Condividi su LinkedIn</a>
+                </div>
+
+                <div class="related-articles">
+                    <h3>Articoli correlati</h3>
+                    <div class="related-grid">
+                        <a href="come-ia-ha-rivoluzionato-workflow.html" class="related-card">
+                            <h4>Come l'IA ha rivoluzionato il mio workflow</h4>
+                            <p>La mia esperienza con l'intelligenza artificiale nello sviluppo</p>
+                        </a>
+                        <a href="debug-assistito-ia.html" class="related-card">
+                            <h4>Debug assistito dall'IA</h4>
+                            <p>Come l'IA mi ha aiutato a risolvere bug complessi</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <footer>
+            <p>&copy; 2026 Dev & AI Blog. Costruito con passione (e un po' di aiuto dall'IA) 🤖💜</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const button = document.querySelector('.theme-toggle');
+
+            body.classList.toggle('dark-mode');
+
+            if (body.classList.contains('dark-mode')) {
+                button.textContent = '☀️ Light Mode';
+            } else {
+                button.textContent = '🌙 Dark Mode';
+            }
+        }
+    </script>
+</body>
+
+</html>

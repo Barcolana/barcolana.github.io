@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev & AI - Il mio viaggio con l'intelligenza artificiale</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode header {
+            background: rgba(30, 30, 46, 0.95);
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode h1 {
+            color: #8b9dff;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 1.1rem;
+            font-style: italic;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .tagline {
+            color: #b0b0b0;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        body.dark-mode nav {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        body.dark-mode .theme-toggle {
+            background: linear-gradient(135deg, #8b9dff, #9d7ec4);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #764ba2;
+        }
+
+        body.dark-mode nav a {
+            color: #8b9dff;
+        }
+
+        body.dark-mode nav a:hover {
+            color: #9d7ec4;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .posts {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .post {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+        }
+
+        body.dark-mode .post {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        body.dark-mode .post:hover {
+            box-shadow: 0 8px 30px rgba(139, 157, 255, 0.2);
+        }
+
+        .post h2 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        body.dark-mode .post h2 {
+            color: #8b9dff;
+        }
+
+        .post-meta {
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            transition: color 0.3s;
+        }
+
+        body.dark-mode .post-meta {
+            color: #7a7a7a;
+        }
+
+        .post-content {
+            color: #555;
+            margin-bottom: 1rem;
+            transition: color 0.3s;
+        }
+
+        body.dark-mode .post-content {
+            color: #b0b0b0;
+        }
+
+        .read-more {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .read-more:hover {
+            color: #764ba2;
+        }
+
+        body.dark-mode .read-more {
+            color: #8b9dff;
+        }
+
+        body.dark-mode .read-more:hover {
+            color: #9d7ec4;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .widget {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .widget {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .widget h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            transition: color 0.3s;
+        }
+
+        body.dark-mode .widget h3 {
+            color: #8b9dff;
+        }
+
+        body.dark-mode .widget p,
+        body.dark-mode .widget ul li a {
+            color: #b0b0b0;
+        }
+
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: #666;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .tag:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        body.dark-mode .tag {
+            background: rgba(139, 157, 255, 0.2);
+            color: #b0b0b0;
+        }
+
+        body.dark-mode .tag:hover {
+            background: #8b9dff;
+            color: #1a1a2e;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode footer {
+            background: rgba(30, 30, 46, 0.9);
+            color: #b0b0b0;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Dev & AI</h1>
+            <p class="tagline">Il mio viaggio nella programmazione con l'intelligenza artificiale</p>
+            <span class="badge">🤖 AI-Assisted Developer</span>
+        </header>
+
+        <nav>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="articoli.html">Articoli</a></li>
+                <li><a href="progetti.html">Progetti</a></li>
+                <li><a href="about.html">Chi Sono</a></li>
+                <li><a href="contatti.html">Contatti</a></li>
+            </ul>
+        </nav>
+
+        <div class="content">
+            <div class="posts">
+                <article class="post">
+                    <h2>Come l'IA ha rivoluzionato il mio workflow di sviluppo</h2>
+                    <div class="post-meta">15 Gennaio 2026 • 5 min di lettura</div>
+                    <div class="post-content">
+                        <p>Da quando ho integrato l'intelligenza artificiale nel mio processo di sviluppo, la mia
+                            produttività è aumentata in modo esponenziale. In questo articolo condivido le strategie e
+                            gli strumenti che utilizzo quotidianamente per scrivere codice migliore in meno tempo...</p>
+                    </div>
+                    <a href="articoli/come-ia-ha-rivoluzionato-workflow.html" class="read-more">Leggi tutto →</a>
+                </article>
+
+                <article class="post">
+                    <h2>Pair Programming con Claude: la mia esperienza</h2>
+                    <div class="post-meta">10 Gennaio 2026 • 8 min di lettura</div>
+                    <div class="post-content">
+                        <p>Che cosa significa davvero fare pair programming con un'IA? Esploro i pro, i contro e le
+                            sorprese che ho incontrato collaborando con Claude su progetti reali. Dalla scrittura di
+                            test alla refactorizzazione del codice legacy...</p>
+                    </div>
+                    <a href="articoli/pair-programming-con-claude.html" class="read-more">Leggi tutto →</a>
+                </article>
+
+                <article class="post">
+                    <h2>Debug assistito dall'IA: quando 2 teste (umana + artificiale) pensano meglio di una</h2>
+                    <div class="post-meta">5 Gennaio 2026 • 6 min di lettura</div>
+                    <div class="post-content">
+                        <p>Il debugging è spesso la parte più frustrante dello sviluppo software. Racconto come
+                            l'utilizzo strategico dell'IA mi ha aiutato a risolvere bug complessi che mi avrebbero fatto
+                            perdere ore di sonno...</p>
+                    </div>
+                    <a href="articoli/debug-assistito-ia.html" class="read-more">Leggi tutto →</a>
+                </article>
+            </div>
+
+            <aside class="sidebar">
+                <div class="widget">
+                    <h3>Chi Sono</h3>
+                    <p>Sviluppatore appassionato che abbraccia l'IA come strumento di crescita. Credo nella trasparenza
+                        e nella collaborazione tra umani e macchine.</p>
+                </div>
+
+                <div class="widget">
+                    <h3>Categorie</h3>
+                    <div class="tag-cloud">
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">Python</span>
+                        <span class="tag">AI Tools</span>
+                        <span class="tag">Web Dev</span>
+                        <span class="tag">Best Practices</span>
+                        <span class="tag">Tutorial</span>
+                        <span class="tag">Riflessioni</span>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <h3>Articoli Popolari</h3>
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 0.8rem;">
+                            <a href="articoli/10-Prompts-che-uso-ogni-giorno.html"
+                                style="color: #667eea; text-decoration: none;">→ 10 prompts che uso ogni
+                                giorno</a>
+                        </li>
+                        <li style="margin-bottom: 0.8rem;">
+                            <a href="articoli\IA-vs-Programmatore-chi-vince.html"
+                                style="color: #667eea; text-decoration: none;">→ IA vs Programmatore: chi
+                                vince?</a>
+                        </li>
+                        <li style="margin-bottom: 0.8rem;">
+                            <a href="articoli/La-mia-toolbox-AI-del-2026.html"
+                                style="color: #667eea; text-decoration: none;">→ La mia toolbox AI del 2026</a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Dev & AI Blog. Costruito con passione (e un po' di aiuto dall'IA) 🤖💜</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const button = document.querySelector('.theme-toggle');
+
+            body.classList.toggle('dark-mode');
+
+            if (body.classList.contains('dark-mode')) {
+                button.textContent = '☀️ Light Mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                button.textContent = '🌙 Dark Mode';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Carica il tema salvato
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            const button = document.querySelector('.theme-toggle');
+
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                button.textContent = '☀️ Light Mode';
+            }
+        });
+    </script>
+</body>
+
+</html>

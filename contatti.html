@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contatti - Dev & AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode header {
+            background: rgba(30, 30, 46, 0.95);
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode h1 {
+            color: #8b9dff;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 1.1rem;
+            font-style: italic;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .tagline {
+            color: #b0b0b0;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        body.dark-mode nav {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        body.dark-mode .theme-toggle {
+            background: linear-gradient(135deg, #8b9dff, #9d7ec4);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #764ba2;
+        }
+
+        body.dark-mode nav a {
+            color: #8b9dff;
+        }
+
+        body.dark-mode nav a:hover,
+        body.dark-mode nav a.active {
+            color: #9d7ec4;
+        }
+
+        .page-title {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        body.dark-mode .page-title {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .page-title h2 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .page-title h2 {
+            color: #8b9dff;
+        }
+
+        .page-title p {
+            color: #666;
+        }
+
+        body.dark-mode .page-title p {
+            color: #b0b0b0;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .contact-form-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .contact-form-section {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .contact-form-section h3 {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        body.dark-mode .contact-form-section h3 {
+            color: #8b9dff;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .form-group label {
+            color: #b0b0b0;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea {
+            background: rgba(139, 157, 255, 0.1);
+            border-color: rgba(139, 157, 255, 0.3);
+            color: #e0e0e0;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        body.dark-mode .form-group input:focus,
+        body.dark-mode .form-group textarea:focus {
+            border-color: #8b9dff;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .contact-info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .info-card {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        body.dark-mode .info-card:hover {
+            box-shadow: 0 8px 30px rgba(139, 157, 255, 0.2);
+        }
+
+        .info-card h3 {
+            color: #667eea;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        body.dark-mode .info-card h3 {
+            color: #8b9dff;
+        }
+
+        .info-card p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .info-card p {
+            color: #b0b0b0;
+        }
+
+        .social-links-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .social-link-card {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        body.dark-mode .social-link-card {
+            background: rgba(139, 157, 255, 0.2);
+        }
+
+        .social-link-card:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .social-link-card:hover .social-icon {
+            transform: scale(1.2);
+        }
+
+        .social-icon {
+            font-size: 2.5rem;
+            transition: all 0.3s;
+        }
+
+        .social-link-card span {
+            color: #667eea;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        body.dark-mode .social-link-card span {
+            color: #8b9dff;
+        }
+
+        .social-link-card:hover span {
+            color: white;
+        }
+
+        .faq-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .faq-section {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .faq-section h3 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        body.dark-mode .faq-section h3 {
+            color: #8b9dff;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        body.dark-mode .faq-item {
+            border-bottom-color: rgba(139, 157, 255, 0.2);
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .faq-question {
+            color: #8b9dff;
+        }
+
+        .faq-answer {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        body.dark-mode .faq-answer {
+            color: #b0b0b0;
+        }
+
+        .success-message {
+            background: #4ade80;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            text-align: center;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode footer {
+            background: rgba(30, 30, 46, 0.9);
+            color: #b0b0b0;
+        }
+
+        @media (max-width: 968px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .social-links-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .theme-toggle {
+                position: static;
+                transform: none;
+                margin-top: 1rem;
+                width: 100%;
+            }
+
+            .theme-toggle:hover {
+                transform: scale(1.05);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Dev & AI</h1>
+            <p class="tagline">Il mio viaggio nella programmazione con l'intelligenza artificiale</p>
+            <span class="badge">🤖 AI-Assisted Developer</span>
+        </header>
+
+        <nav>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="articoli.html">Articoli</a></li>
+                <li><a href="progetti.html">Progetti</a></li>
+                <li><a href="about.html">Chi Sono</a></li>
+                <li><a href="contatti.html" class="active">Contatti</a></li>
+            </ul>
+        </nav>
+
+        <div class="page-title">
+            <h2>📬 Mettiamoci in Contatto</h2>
+            <p>Hai domande, proposte o vuoi semplicemente fare due chiacchiere? Scrivimi!</p>
+        </div>
+
+        <div class="contact-container">
+            <div class="contact-form-section">
+                <h3>✉️ Invia un messaggio</h3>
+                <div class="success-message" id="successMessage">
+                    ✅ Messaggio inviato con successo! Ti risponderò al più presto.
+                </div>
+                <div class="form-group">
+                    <label for="name">Nome *</label>
+                    <input type="text" id="name" placeholder="Il tuo nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" placeholder="tua@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Oggetto *</label>
+                    <input type="text" id="subject" placeholder="Di cosa vuoi parlare?" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Messaggio *</label>
+                    <textarea id="message" placeholder="Scrivi qui il tuo messaggio..." required></textarea>
+                </div>
+                <button class="submit-btn" onclick="handleSubmit()">Invia Messaggio</button>
+            </div>
+
+            <div class="contact-info-section">
+                <div class="info-card">
+                    <h3>⏱️ Tempi di Risposta</h3>
+                    <p>Di solito rispondo entro 24-48 ore nei giorni lavorativi. Se la tua richiesta è urgente,
+                        contattami su LinkedIn!</p>
+                </div>
+
+                <div class="info-card">
+                    <h3>💬 Collaborazioni</h3>
+                    <p>Sono sempre aperto a collaborazioni interessanti, progetti open source e opportunità di
+                        mentoring. Se hai un'idea, condividila!</p>
+                </div>
+
+                <div class="info-card">
+                    <h3>🌐 Seguimi sui Social</h3>
+                    <div class="social-links-grid">
+                        <a href="#" class="social-link-card">
+                            <div class="social-icon">💼</div>
+                            <span>LinkedIn</span>
+                        </a>
+                        <a href="#" class="social-link-card">
+                            <div class="social-icon">📁</div>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="#" class="social-link-card">
+                            <div class="social-icon">🐦</div>
+                            <span>Twitter</span>
+                        </a>
+                        <a href="#" class="social-link-card">
+                            <div class="social-icon">📧</div>
+                            <span>Email</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h3>❓ Domande Frequenti</h3>
+
+            <div class="faq-item">
+                <div class="faq-question">Posso usare il tuo codice nei miei progetti?</div>
+                <div class="faq-answer">
+                    Certamente! Tutto il codice che condivido sul blog e su GitHub è open source (controlla la licenza
+                    specifica di ogni repository). Apprezzo sempre una menzione o un link al progetto originale!
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Fai consulenze o progetti freelance?</div>
+                <div class="faq-answer">
+                    Al momento sono focalizzato sul mio lavoro principale, ma valuto progetti interessanti e
+                    collaborazioni. Contattami con i dettagli del tuo progetto e vediamo se possiamo lavorare insieme!
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Come posso imparare a usare l'IA come te?</div>
+                <div class="faq-answer">
+                    Leggi gli articoli nella sezione Tutorial del blog! Condivido regolarmente i miei prompt, workflow e
+                    best practices. La chiave è sperimentare, fare domande specifiche e validare sempre il codice
+                    generato.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Accetti guest post sul tuo blog?</div>
+                <div class="faq-answer">
+                    Sì! Se hai esperienza con l'IA nello sviluppo e vuoi condividere le tue conoscenze, sarò felice di
+                    considerare il tuo articolo. Contattami con una breve proposta dell'argomento.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Organizzi workshop o sessioni di mentoring?</div>
+                <div class="faq-answer">
+                    Occasionalmente organizzo sessioni di gruppo su come utilizzare l'IA nello sviluppo. Iscriviti alla
+                    newsletter (in arrivo!) per essere notificato dei prossimi eventi.
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Dev & AI Blog. Costruito con passione (e un po' di aiuto dall'IA) 🤖💜</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const button = document.querySelector('.theme-toggle');
+
+            body.classList.toggle('dark-mode');
+
+            if (body.classList.contains('dark-mode')) {
+                button.textContent = '☀️ Light Mode';
+            } else {
+                button.textContent = '🌙 Dark Mode';
+            }
+        }
+
+        function handleSubmit() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+
+            if (!name || !email || !subject || !message) {
+                alert('Per favore compila tutti i campi obbligatori');
+                return;
+            }
+
+            // Validazione email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Per favore inserisci un indirizzo email valido');
+                return;
+            }
+
+            // Simulazione invio (in un caso reale useresti un backend o servizio email)
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+
+            // Reset form
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('subject').value = '';
+            document.getElementById('message').value = '';
+
+            // Nascondi messaggio dopo 5 secondi
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 5000);
+
+            // In un caso reale, qui invieresti i dati a un backend:
+            // fetch('/api/contact', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ name, email, subject, message })
+            // });
+        }
+    </script>
+</body>
+
+</html>

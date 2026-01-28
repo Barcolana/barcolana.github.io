@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 Prompts che uso ogni giorno per programmare - Dev & AI</title>
+    <meta name="description"
+        content="I prompt più utili per massimizzare la produttività quando programmi con l'intelligenza artificiale.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode header {
+            background: rgba(30, 30, 46, 0.95);
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode h1 {
+            color: #8b9dff;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 1.1rem;
+            font-style: italic;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .tagline {
+            color: #b0b0b0;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        body.dark-mode nav {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        body.dark-mode .theme-toggle {
+            background: linear-gradient(135deg, #8b9dff, #9d7ec4);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #764ba2;
+        }
+
+        body.dark-mode nav a {
+            color: #8b9dff;
+        }
+
+        body.dark-mode nav a:hover {
+            color: #9d7ec4;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+            color: #764ba2;
+        }
+
+        body.dark-mode .back-link {
+            color: #8b9dff;
+        }
+
+        body.dark-mode .back-link:hover {
+            color: #9d7ec4;
+        }
+
+        article {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode article {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .article-header {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        body.dark-mode .article-header {
+            border-bottom-color: rgba(139, 157, 255, 0.2);
+        }
+
+        .article-title {
+            color: #667eea;
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .article-title {
+            color: #8b9dff;
+        }
+
+        .article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .article-meta {
+            color: #b0b0b0;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        body.dark-mode .tag {
+            background: rgba(139, 157, 255, 0.2);
+            color: #8b9dff;
+        }
+
+        .article-content {
+            color: #333;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        body.dark-mode .article-content {
+            color: #e0e0e0;
+        }
+
+        .article-content h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .article-content h2 {
+            color: #8b9dff;
+        }
+
+        .article-content h3 {
+            color: #667eea;
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        body.dark-mode .article-content h3 {
+            color: #8b9dff;
+        }
+
+        .article-content p {
+            margin-bottom: 1.2rem;
+        }
+
+        .article-content ul {
+            margin-left: 2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: #e91e63;
+        }
+
+        body.dark-mode .article-content code {
+            background: rgba(139, 157, 255, 0.2);
+            color: #ff6b9d;
+        }
+
+        .article-content pre {
+            background: #f5f5f5;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 1.2rem;
+        }
+
+        body.dark-mode .article-content pre {
+            background: rgba(139, 157, 255, 0.1);
+        }
+
+        .article-content pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+        }
+
+        body.dark-mode .article-content pre code {
+            color: #e0e0e0;
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #666;
+        }
+
+        body.dark-mode .article-content blockquote {
+            border-left-color: #8b9dff;
+            color: #b0b0b0;
+        }
+
+        .prompt-card {
+            background: rgba(102, 126, 234, 0.05);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .prompt-card {
+            background: rgba(139, 157, 255, 0.1);
+            border-color: rgba(139, 157, 255, 0.3);
+        }
+
+        .prompt-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        body.dark-mode .prompt-card:hover {
+            border-color: #8b9dff;
+        }
+
+        .prompt-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .prompt-title {
+            color: #667eea;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .prompt-title {
+            color: #8b9dff;
+        }
+
+        .prompt-text {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            color: #333;
+        }
+
+        body.dark-mode .prompt-text {
+            background: rgba(30, 30, 46, 0.5);
+            border-left-color: #8b9dff;
+            color: #e0e0e0;
+        }
+
+        .prompt-use-case {
+            color: #666;
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+
+        body.dark-mode .prompt-use-case {
+            color: #b0b0b0;
+        }
+
+        .highlight-box {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        body.dark-mode .highlight-box {
+            background: rgba(139, 157, 255, 0.2);
+            border-left-color: #8b9dff;
+        }
+
+        .article-footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        body.dark-mode .article-footer {
+            border-top-color: rgba(139, 157, 255, 0.2);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .share-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .related-articles {
+            margin-top: 2rem;
+        }
+
+        .related-articles h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .related-articles h3 {
+            color: #8b9dff;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .related-card {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .related-card {
+            background: rgba(139, 157, 255, 0.2);
+        }
+
+        .related-card:hover {
+            transform: translateY(-5px);
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .related-card h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .related-card h4 {
+            color: #8b9dff;
+        }
+
+        .related-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .related-card p {
+            color: #b0b0b0;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode footer {
+            background: rgba(30, 30, 46, 0.9);
+            color: #b0b0b0;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .theme-toggle {
+                position: static;
+                transform: none;
+                margin-top: 1rem;
+                width: 100%;
+            }
+
+            .theme-toggle:hover {
+                transform: scale(1.05);
+            }
+
+            article {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-content {
+                font-size: 1rem;
+            }
+
+            .share-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Dev & AI</h1>
+            <p class="tagline">Il mio viaggio nella programmazione con l'intelligenza artificiale</p>
+            <span class="badge">🤖 AI-Assisted Developer</span>
+        </header>
+
+        <nav>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../articoli.html">Articoli</a></li>
+                <li><a href="../progetti.html">Progetti</a></li>
+                <li><a href="../about.html">Chi Sono</a></li>
+                <li><a href="../contatti.html">Contatti</a></li>
+            </ul>
+        </nav>
+
+        <a href="../articoli.html" class="back-link">← Torna agli articoli</a>
+
+        <article>
+            <div class="article-header">
+                <h1 class="article-title">10 Prompts che uso ogni giorno per programmare meglio</h1>
+
+                <div class="article-meta">
+                    <span class="meta-item">📅 1 Gennaio 2026</span>
+                    <span class="meta-item">⏱️ 7 minuti di lettura</span>
+                    <span class="meta-item">✍️ Marco</span>
+                </div>
+
+                <div class="article-tags">
+                    <span class="tag">#Prompts</span>
+                    <span class="tag">#Tips</span>
+                    <span class="tag">#Produttività</span>
+                    <span class="tag">#AI</span>
+                </div>
+            </div>
+
+            <div class="article-content">
+                <p>
+                    Dopo più di un anno di sviluppo assistito dall'IA, ho affinato una collezione di
+                    prompt che uso quotidianamente. Non sono prompt magici, ma strategie testate sul
+                    campo che massimizzano la qualità delle risposte dell'IA e mi fanno risparmiare ore.
+                </p>
+
+                <p>
+                    Questi prompt funzionano con Claude, ChatGPT, e la maggior parte degli assistenti AI.
+                    La chiave è essere specifici, fornire contesto e iterare.
+                </p>
+
+                <div class="highlight-box">
+                    <strong>💡 Pro tip:</strong> Copia questi prompt e adattali al tuo contesto specifico.
+                    Funzionano meglio quando li personalizzi con i tuoi stack, convenzioni e preferenze.
+                </div>
+
+                <h2>I 10 Prompts Essenziali</h2>
+
+                <div class="prompt-card">
+                    <div class="prompt-number">1</div>
+                    <div class="prompt-title">🏗️ Architecting Features</div>
+                    <div class="prompt-text">
+                        "Devo implementare [FEATURE]. Il mio stack è [TECNOLOGIE].
+                        Suggerisci un'architettura che sia:
+                        - Scalabile
+                        - Testabile
+                        - Manutenibile
+                        Fornisci anche pro/contro di approcci alternativi."
+                    </div>
+                    <p class="prompt-use-case">
+                        <strong>Quando usarlo:</strong> All'inizio di ogni nuova feature, prima di scrivere
+                        codice. Previene refactoring massicci successivi.
+                    </p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-number">2</div>
+                    <div class="prompt-title">🐛 Debug Expert</div>
+                    <div class="prompt-text">
+                        "Ho questo errore: [ERRORE COMPLETO]
+
+                        Contesto:
+                        - Cosa dovrebbe succedere: [COMPORTAMENTO ATTESO]
+                        - Cosa succede invece: [COMPORTAMENTO REALE]
+                        - Codice rilevante: [CODICE]
+                        - Environment: [VERSIONI/OS/BROWSER]
+
+                        Analizza possibili cause ordinate per probabilità."
+                    </div>
+                    <p class="prompt-use-case">
+                        <strong>Quando usarlo:</strong> Quando un bug ti blocca da più di 15 minuti.
+                        Risparmia ore di debugging frustrato.
+                    </p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-number">3</div>
+                    <div class="prompt-title">✅ Test Generator Pro</div>
+                    <div class="prompt-text">
+                        "Genera test completi per questa funzione/componente:
+                        [CODICE]
+
+                        Includi:
+                        - Happy path
+                        - Edge cases
+                        - Error handling
+                        - Usa [TESTING FRAMEWORK] con best practices"
+                    </div>
+                    <p class="prompt-use-case">
+                        <strong>Quando usarlo:</strong> Dopo aver scritto funzioni importanti. L'IA
+                        pensa a edge cases che potresti dimenticare.
+                    </p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-number">4</div>
+                    <div class="prompt-title">♻️ Refactoring Assistant</div>
+                    <div class="prompt-text">
+                        "Refactorizza questo codice mantenendo la stessa funzionalità:
+                        [CODICE]
+
+                        Obiettivi:
+                        - Migliorare leggibilità
+                        - Ridurre complessità
+                        - Seguire principi SOLID
+                        - Mantenere performance
+
+                        Spiega ogni cambiamento significativo."
+                    </div>
+                    <p class="prompt-use-case">
+                        <strong>Quando usarlo:</strong> Durante code review personali o quando il codice
+                        "funziona ma puzza".
+                    </p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-number">5</div>
+                    <div class="prompt-title">📚 Code Explainer</div>
+                    <div class="prompt-text">
+                        "Spiega questo codice come se fossi un developer [LIVELLO]:
+                        [CODICE]
+
+                        Includi:
+                        - Cosa fa step-by-step
+                        - Pattern/concetti utilizzati
+                        - Potenziali miglioramenti
+                        - Quando usare approcci simili"
+                    </div>
+                    <p class="prompt-use-case">
+                        <strong>Quando usarlo:</strong> Per capire codice legacy, librerie nuove o
+                        per consolidare l'apprendimento.
+                    </p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-number">6</div>
+                    <div class="prompt-title">🎨 Component Builder</div>
+                    <div class="prompt-text">
+                        "Crea un componente [TIPO] in [FRAMEWORK] con:
+
+                        Requisiti funzionali:
+                        - [LISTA FEATURE]
+
+                        Requisiti tecnici:
+                        - TypeScript con tipi strict
+                        - Accessibilità WCAG AA
+                        - Props con valori di default
+                        - Esempi d'uso nella JSDoc
+
+                        Stile: usa [TAILWIND/CSS-IN-JS/etc]"
+                    </div>
+                    <p class="prompt-use-case">
+                        <strong>Quando usarlo:</strong> Per generare componenti UI complessi velocemente,
+                        con tutte le best practices incluse.
+                    </p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-number">7</div>
+                    <div class="prompt-title">🔍 Code Review</div>
+                    <div class="prompt-text">
+                        "Fai code review di questo codice come un senior developer:
+                        [CODICE]
+
+                        Cerca:
+                        - Bug potenziali
+                        - Problemi di performance
+                        - Security issues
+                        - Best practices violate
+                        - Opportunità di refactoring
+
+                        Sii costruttivo e spiega il perché."
+                    </div>
+                    <p class="prompt-use-case">
+                        <strong>Quando usarlo:</strong> Prima di fare PR o commit importanti. Cattura
+                        problemi prima che vadano in review umana.
+                    </p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-number">8</div>
+                    <div class="prompt-title">📖 Documentation Writer</div>
+                    <div class="prompt-text">
+                        "Genera documentazione completa per:
+                        [CODICE/API/COMPONENTE]
+
+                        Formato:
+                        - Overview breve
+                        - Parametri/Props con tipi e default
+                        - Esempi d'uso (minimo 3)
+                        - Note su performance/gotchas
+                        - Related components/functions
+
+                        Stile: chiaro e diretto, esempi pratici."
+                    </div>
+                    <p class="prompt-use-case">
+                        <strong>Quando usarlo:</strong> Quando finisci una feature o componente riusabile.
+                        La doc è sempre aggiornata.
+                    </p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-number">9</div>
+                    <div class="prompt-title">🚀 Performance Optimizer</div>
+                    <div class="prompt-text">
+                        "Analizza questo codice per problemi di performance:
+                        [CODICE]
+
+                        Focus su:
+                        - O(n) complexity e possibili ottimizzazioni
+                        - Memory leaks
+                        - Rendering inutili (React/Vue)
+                        - Network requests ottimizzabili
+                        - Lazy loading opportunities
+
+                        Suggerisci soluzioni concrete."
+                    </div>
+                    <p class="prompt-use-case">
+                        <strong>Quando usarlo:</strong> Quando noti slowdown o prima di release in produzione
+                        di feature critiche.
+                    </p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-number">10</div>
+                    <div class="prompt-title">🎓 Learning Assistant</div>
+                    <div class="prompt-text">
+                        "Voglio imparare [CONCETTO/TECNOLOGIA].
+
+                        Crea un piano di apprendimento progressivo con:
+                        - Prerequisiti necessari
+                        - Concetti core da padroneggiare
+                        - Progetti pratici (dal facile al complesso)
+                        - Risorse consigliate
+                        - Errori comuni da evitare
+
+                        Adatta il piano al mio livello: [LIVELLO ATTUALE]"
+                    </div>
+                    <p class="prompt-use-case">
+                        <strong>Quando usarlo:</strong> Per imparare nuove tecnologie in modo strutturato
+                        invece di tutorial-hop casuale.
+                    </p>
+                </div>
+
+                <h2>Pro Tips per prompt efficaci</h2>
+
+                <h3>1. Sii specifico, non generico</h3>
+                <p>
+                    ❌ "Crea un form di login"<br>
+                    ✅ "Crea un form di login in React con React Hook Form, validazione real-time,
+                    gestione errori server, forgot password link, e integrazione con la mia API JWT"
+                </p>
+
+                <h3>2. Fornisci sempre il contesto</h3>
+                <p>Includi:</p>
+                <ul>
+                    <li>Stack tecnologico attuale</li>
+                    <li>Convenzioni del progetto</li>
+                    <li>Vincoli (performance, browser support, etc.)</li>
+                    <li>Esempi di codice simile già esistente</li>
+                </ul>
+
+                <h3>3. Chiedi spiegazioni, non solo codice</h3>
+                <p>
+                    Aggiungi sempre: "Spiega le scelte principali" o "Perché questo approccio
+                    invece di [alternativa]?"
+                </p>
+
+                <h3>4. Itera, non accettare la prima risposta</h3>
+                <p>
+                    Se qualcosa non va: "Questo è ottimo, ma puoi modificarlo per [REQUISITO]?"
+                    L'IA migliora con feedback specifico.
+                </p>
+
+                <h3>5. Valida sempre</h3>
+                <p>
+                    L'IA può sbagliare. Leggi il codice, testalo, verifica con la documentazione
+                    ufficiale. Sei tu il responsabile finale.
+                </p>
+
+                <h2>Come personalizzare questi prompt</h2>
+
+                <p>
+                    Questi prompt sono template. Per massimizzare l'efficacia:
+                </p>
+
+                <ol>
+                    <li><strong>Salva i tuoi preferiti:</strong> Crea una note/snippet con i prompt
+                        che usi più spesso</li>
+                    <li><strong>Aggiungi le tue convenzioni:</strong> "Usa sempre [PATTERN] per
+                        [SCENARIO]"</li>
+                    <li><strong>Costruisci un context file:</strong> Un documento con stack, regole,
+                        e preferenze da condividere all'inizio di sessioni lunghe</li>
+                    <li><strong>Trackalo:</strong> Annota quali prompt danno risultati migliori per
+                        quali task</li>
+                </ol>
+
+                <h2>Il mio workflow con questi prompt</h2>
+
+                <p>Ecco come uso questi prompt in una giornata tipo:</p>
+
+                <ul>
+                    <li><strong>Morning (Planning):</strong> Prompt #1 per architettare la feature del giorno</li>
+                    <li><strong>Development:</strong> Prompt #6 per componenti, #3 per test immediati</li>
+                    <li><strong>Debug session:</strong> Prompt #2 quando bloccato &gt;15 min</li>
+                    <li><strong>Before lunch:</strong> Prompt #7
+                        <h2>Conclusioni</h2>
+
+                        <p>
+                            Questi 10 prompt sono diventati parte integrante del mio workflow quotidiano.
+                            Non sono formule magiche, ma strumenti che, usati con giudizio, amplificano
+                            enormemente la produttività.
+                        </p>
+
+                        <p>
+                            La chiave è ricordare che l'IA è un assistente, non un sostituto. Usa questi
+                            prompt per accelerare le parti ripetitive, ma mantieni sempre il controllo
+                            della logica, dell'architettura e delle decisioni critiche.
+                        </p>
+
+                        <div class="highlight-box">
+                            <strong>🎯 Challenge:</strong> Prova a usare almeno 3 di questi prompt questa
+                            settimana. Trackalo e vedi come impattano la tua produttività. Poi personalizzali
+                            per il tuo workflow!
+                        </div>
+            </div>
+
+            <div class="article-footer">
+                <div class="share-buttons">
+                    <a href="#" class="share-btn">📱 Condividi su Twitter</a>
+                    <a href="#" class="share-btn">💼 Condividi su LinkedIn</a>
+                </div>
+
+                <div class="related-articles">
+                    <h3>Articoli correlati</h3>
+                    <div class="related-grid">
+                        <a href="come-ia-ha-rivoluzionato-workflow.html" class="related-card">
+                            <h4>Come l'IA ha rivoluzionato il mio workflow</h4>
+                            <p>La mia esperienza con l'intelligenza artificiale nello sviluppo</p>
+                        </a>
+                        <a href="pair-programming-con-claude.html" class="related-card">
+                            <h4>Pair Programming con Claude</h4>
+                            <p>Collaborare efficacemente con l'intelligenza artificiale</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <footer>
+            <p>&copy; 2026 Dev & AI Blog. Costruito con passione (e un po' di aiuto dall'IA) 🤖💜</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const button = document.querySelector('.theme-toggle');
+
+            body.classList.toggle('dark-mode');
+
+            if (body.classList.contains('dark-mode')) {
+                button.textContent = '☀️ Light Mode';
+            } else {
+                button.textContent = '🌙 Dark Mode';
+            }
+        }
+    </script>

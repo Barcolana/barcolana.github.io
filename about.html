@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Sono - Dev & AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode header {
+            background: rgba(30, 30, 46, 0.95);
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode h1 {
+            color: #8b9dff;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 1.1rem;
+            font-style: italic;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .tagline {
+            color: #b0b0b0;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        body.dark-mode nav {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        body.dark-mode .theme-toggle {
+            background: linear-gradient(135deg, #8b9dff, #9d7ec4);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #764ba2;
+        }
+
+        body.dark-mode nav a {
+            color: #8b9dff;
+        }
+
+        body.dark-mode nav a:hover,
+        body.dark-mode nav a.active {
+            color: #9d7ec4;
+        }
+
+        .hero-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        body.dark-mode .hero-section {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .profile-image {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .hero-content h2 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .hero-content h2 {
+            color: #8b9dff;
+        }
+
+        .hero-content p {
+            color: #666;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        body.dark-mode .hero-content p {
+            color: #b0b0b0;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .content-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .content-section {
+            background: rgba(30, 30, 46, 0.9);
+        }
+
+        .content-section h3 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        body.dark-mode .content-section h3 {
+            color: #8b9dff;
+        }
+
+        .content-section p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .content-section p {
+            color: #b0b0b0;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #667eea, #764ba2);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.6rem;
+            top: 0.5rem;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #667eea;
+            border: 3px solid white;
+        }
+
+        body.dark-mode .timeline-item::before {
+            border-color: rgba(30, 30, 46, 0.9);
+            background: #8b9dff;
+        }
+
+        .timeline-year {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .timeline-year {
+            color: #8b9dff;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-card {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .skill-card {
+            background: rgba(139, 157, 255, 0.2);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .skill-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-name {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .skill-name {
+            color: #8b9dff;
+        }
+
+        .skill-level {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .skill-level {
+            color: #b0b0b0;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .value-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .value-card {
+            background: rgba(50, 50, 70, 0.5);
+            border-left-color: #8b9dff;
+        }
+
+        .value-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .value-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .value-card h4 {
+            color: #667eea;
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+        }
+
+        body.dark-mode .value-card h4 {
+            color: #8b9dff;
+        }
+
+        .value-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        body.dark-mode .value-card p {
+            color: #b0b0b0;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode footer {
+            background: rgba(30, 30, 46, 0.9);
+            color: #b0b0b0;
+        }
+
+        @media (max-width: 968px) {
+            .hero-section {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .profile-image {
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .theme-toggle {
+                position: static;
+                transform: none;
+                margin-top: 1rem;
+                width: 100%;
+            }
+
+            .theme-toggle:hover {
+                transform: scale(1.05);
+            }
+
+            .hero-section {
+                padding: 2rem;
+            }
+
+            .profile-image {
+                width: 180px;
+                height: 180px;
+                font-size: 6rem;
+            }
+
+            .social-links {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Dev & AI</h1>
+            <p class="tagline">Il mio viaggio nella programmazione con l'intelligenza artificiale</p>
+            <span class="badge">🤖 AI-Assisted Developer</span>
+        </header>
+
+        <nav>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="articoli.html">Articoli</a></li>
+                <li><a href="progetti.html">Progetti</a></li>
+                <li><a href="about.html" class="active">Chi Sono</a></li>
+                <li><a href="contatti.html">Contatti</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero-section">
+            <div class="profile-image">👨‍💻</div>
+            <div class="hero-content">
+                <h2>Ciao, sono Emiliano 👋</h2>
+                <p>
+                    Sviluppatore Full Stack appassionato di tecnologia e intelligenza artificiale.
+                    Ho scelto di essere trasparente riguardo all'uso dell'IA nel mio lavoro perché
+                    credo che sia il futuro dello sviluppo software e che condividere questa esperienza
+                    possa aiutare altri developer a crescere.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <span>💼</span> LinkedIn
+                    </a>
+                    <a href="#" class="social-link">
+                        <span>📁</span> GitHub
+                    </a>
+                    <a href="#" class="social-link">
+                        <span>🐦</span> Twitter
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h3>📖 La Mia Storia</h3>
+            <p>
+                Ho iniziato a programmare nel 2018, spinto dalla curiosità di capire come funzionassero
+                le applicazioni che usavo ogni giorno. All'inizio, come tutti, ho affrontato le sfide
+                tipiche del principiante: debug infiniti, documentazione incomprensibile e la sindrome
+                dell'impostore sempre in agguato.
+            </p>
+            <p>
+                Nel 2023, ho scoperto il potenziale dell'intelligenza artificiale come assistente di
+                programmazione. Non è stata una rivelazione improvvisa, ma un processo graduale di
+                sperimentazione e apprendimento. Ho imparato che l'IA non sostituisce il developer,
+                ma amplifica le sue capacità, permettendogli di concentrarsi sulla logica e sul design
+                piuttosto che sulla sintassi.
+            </p>
+            <p>
+                Oggi utilizzo l'IA quotidianamente nel mio lavoro: per il brainstorming di soluzioni,
+                la scrittura di test, il refactoring di codice legacy e l'apprendimento di nuove
+                tecnologie. Ma la parte più importante è che ho imparato a fare le domande giuste e
+                a valutare criticamente le risposte ricevute.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h3>🚀 Il Mio Percorso</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2026 - Presente</div>
+                    <p><strong>Senior Full Stack Developer</strong> - Utilizzo avanzato dell'IA per sviluppo
+                        e mentoring di junior developer sull'uso etico e produttivo dell'intelligenza artificiale.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2024 - 2025</div>
+                    <p><strong>Full Stack Developer</strong> - Integrazione sistematica dell'IA nel workflow
+                        quotidiano. Creazione di template e best practices per il team.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2023</div>
+                    <p><strong>Scoperta dell'AI Coding</strong> - Primi esperimenti con assistenti AI.
+                        Fase di apprendimento intensivo su come collaborare efficacemente con l'IA.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2020 - 2022</div>
+                    <p><strong>Junior Developer</strong> - Apprendimento delle basi dello sviluppo web,
+                        pattern di design, architetture software e metodologie agile.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2018 - 2019</div>
+                    <p><strong>Autodidatta</strong> - Primi passi nella programmazione attraverso corsi
+                        online, tutorial e progetti personali. HTML, CSS, JavaScript basics.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h3>💻 Competenze Tecniche</h3>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">⚛️</div>
+                    <div class="skill-name">React & Next.js</div>
+                    <div class="skill-level">Avanzato</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🟢</div>
+                    <div class="skill-name">Node.js & Express</div>
+                    <div class="skill-level">Avanzato</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🐍</div>
+                    <div class="skill-name">Python</div>
+                    <div class="skill-level">Intermedio</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🗄️</div>
+                    <div class="skill-name">MongoDB & PostgreSQL</div>
+                    <div class="skill-level">Avanzato</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🎨</div>
+                    <div class="skill-name">TailwindCSS</div>
+                    <div class="skill-level">Avanzato</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🤖</div>
+                    <div class="skill-name">AI Integration</div>
+                    <div class="skill-level">Avanzato</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h3>💡 I Miei Valori</h3>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">🌟</div>
+                    <h4>Trasparenza</h4>
+                    <p>
+                        Credo nell'onestà riguardo all'uso dell'IA. Non nascondo che utilizzo questi
+                        strumenti, perché penso che la trasparenza costruisca fiducia e incoraggi
+                        conversazioni produttive.
+                    </p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">📚</div>
+                    <h4>Apprendimento Continuo</h4>
+                    <p>
+                        La tecnologia evolve rapidamente. Dedico tempo ogni settimana per imparare
+                        nuove tecnologie, pattern e approcci, utilizzando l'IA come acceleratore
+                        dell'apprendimento.
+                    </p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🤝</div>
+                    <h4>Collaborazione</h4>
+                    <p>
+                        Condivido le mie conoscenze attraverso questo blog, mentoring e contributi
+                        open source. Credo che cresciamo meglio insieme, umani e IA.
+                    </p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">⚖️</div>
+                    <h4>Uso Etico dell'IA</h4>
+                    <p>
+                        L'IA è uno strumento potente che va usato responsabilmente. Verifico sempre
+                        il codice generato, capisco cosa fa e mi assicuro che rispetti privacy e
+                        sicurezza.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h3>🎯 Perché questo blog?</h3>
+            <p>
+                Ho creato questo blog per documentare il mio viaggio come developer che utilizza
+                l'intelligenza artificiale nel lavoro quotidiano. Voglio contribuire a normalizzare
+                questa pratica e dimostrare che l'IA non è una scorciatoia, ma uno strumento di
+                amplificazione delle competenze.
+            </p>
+            <p>
+                Qui condivido tutorial pratici, riflessioni personali, errori commessi e lezioni
+                apprese. L'obiettivo è creare una risorsa utile per altri developer che vogliono
+                integrare l'IA nel loro workflow in modo produttivo ed etico.
+            </p>
+            <p>
+                Se anche tu sei curioso di esplorare questo mondo, ti invito a leggere gli articoli,
+                provare i progetti e contattarmi per qualsiasi domanda. Sono sempre felice di
+                scambiare idee con altri developer!
+            </p>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Dev & AI Blog. Costruito con passione (e un po' di aiuto dall'IA) 🤖💜</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const button = document.querySelector('.theme-toggle');
+
+            body.classList.toggle('dark-mode');
+
+            if (body.classList.contains('dark-mode')) {
+                button.textContent = '☀️ Light Mode';
+            } else {
+                button.textContent = '🌙 Dark Mode';
+            }
+        }
+    </script>
+</body>
+
+</html>
